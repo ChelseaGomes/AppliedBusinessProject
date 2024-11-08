@@ -1,4 +1,4 @@
-<mvc:View controllerName="expensecreation.controller.Expense"
+<mvc:View xmlns:core="sap.ui.core" controllerName="expensecreation.controller.Expense"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m"
     xmlns:f="sap.ui.layout.form"
@@ -22,17 +22,27 @@
             columnsM="1">
 
             <Label id="projectnaam" text="Projectnaam"></Label>
-            <Input id="inputpn" value="{expenseModel>/project_name}"></Input>
+            <Input id="inputpn" value="{expenseModel>/project_name}" required="true"></Input>
             <Label id="projectleider" text="Projectleider" />
-            <Input id="inputpl" value="{expenseModel>/project_leader}" />
+            <Input id="inputpl" value="{expenseModel>/project_leader}" required="true" />
             <Label id="startdatum" text="Startdatum" />
-            <DatePicker id="DatePicker" value="{expenseModel>/start_date}" />
+            <DatePicker id="DatePicker" value="{expenseModel>/start_date}" required="true" />
             <Label id="categorie" text="Categorie" />
-            <Input id="inputcategorie" value="{expenseModel>/category}" />
+            <Select id="categorieselect" selectedKey="{expenseModel>/category}" required="true">
+            <items>
+            <core:Item id="categories" key="{category_id}" text="{name}" ></core:Item>
+            </items>
+            </Select>
             <Label id="financingtype" text="Financing type" />
-            <Input id="inputft" value="{expenseModel>/financing_type}" />
+            <Select id="financingtypeselect" selectedKey="{expenseModel>/financing_type}" required="true">
+            <items>
+            <core:Item id="financing" key="{financing_id}" text="{name}"></core:Item>
+            </items>
+            </Select>
             <Label id="aantalmaanden" text="Aantal maanden van uitvoering" />
-            <Input id="inputam" value="{expenseModel>/execution_months}" />
+            <Input id="inputam" value="{expenseModel>/execution_months}" required="true" />
+            
+
 
     
     </f:SimpleForm>

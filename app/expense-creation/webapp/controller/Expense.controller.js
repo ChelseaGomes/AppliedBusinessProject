@@ -25,6 +25,7 @@ function (Controller, MessageBox) {
 
            
             this.getView().setModel(oExpenseModel, "expenseModel");
+            
         },
         onProspectCreation: function(oEvent){
             
