@@ -1,7 +1,45 @@
 <mvc:View controllerName="expensecreation.controller.Expense"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout">
     <Page id="page" title="{i18n>title}">
-        <content />
+
+    <f:SimpleForm id="expensecreationform"
+            editable="true"
+            layout="ResponsiveGridLayout"
+            
+            labelSpanXL="3"
+            labelSpanL="3"
+            labelSpanM="3"
+            labelSpanS="12"
+            emptySpanXL="4"
+            emptySpanL="4"
+            emptySpanM="4"
+            emptySpanS="0"
+            columnsXL="1"
+            columnsL="1"
+            columnsM="1">
+
+            <Label id="projectnaam" text="Projectnaam"></Label>
+            <Input id="inputpn" value="{expenseModel>/project_name}"></Input>
+            <Label id="projectleider" text="Projectleider" />
+            <Input id="inputpl" value="{expenseModel>/project_leader}" />
+            <Label id="startdatum" text="Startdatum" />
+            <DatePicker id="DatePicker" value="{expenseModel>/start_date}" />
+            <Label id="categorie" text="Categorie" />
+            <Input id="inputcategorie" value="{expenseModel>/category}" />
+            <Label id="financingtype" text="Financing type" />
+            <Input id="inputft" value="{expenseModel>/financing_type}" />
+            <Label id="aantalmaanden" text="Aantal maanden van uitvoering" />
+            <Input id="inputam" value="{expenseModel>/execution_months}" />
+
+    
+    </f:SimpleForm>
+
+    <Button id="_IDGenButton" text="Create Expense" press="onProspectCreation" />
+
+            
+       
     </Page>
 </mvc:View>
