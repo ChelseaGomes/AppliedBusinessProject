@@ -1,55 +1,92 @@
-<mvc:View xmlns:core="sap.ui.core" controllerName="expensecreation.controller.Expense"
-    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+<mvc:View 
+    xmlns:core="sap.ui.core" 
+    xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:f="sap.ui.layout.form"
-    xmlns:l="sap.ui.layout">
+    xmlns:l="sap.ui.layout"
+    controllerName="expensecreation.controller.Expense" 
+    displayBlock="true">
+    
     <Page id="page" title="{i18n>title}">
 
-    <f:SimpleForm id="expensecreationform"
+        <f:SimpleForm 
+            id="expensecreationform"
             editable="true"
             layout="ResponsiveGridLayout"
-            
-            labelSpanXL="3"
+            labelSpanXL="4"
             labelSpanL="3"
-            labelSpanM="3"
+            labelSpanM="4"
             labelSpanS="12"
-            emptySpanXL="4"
+            adjustLabelSpan="false"
+            emptySpanXL="0"
             emptySpanL="4"
-            emptySpanM="4"
+            emptySpanM="0"
             emptySpanS="0"
-            columnsXL="1"
+            columnsXL="2"
             columnsL="1"
-            columnsM="1">
+            columnsM="1"
+            singleContainerFullSize="false">
 
-            <Label id="projectnaam" text="Projectnaam"></Label>
-            <Input id="inputpn" value="{expenseModel>/project_name}" required="true"></Input>
-            <Label id="projectleider" text="Projectleider" />
-            <Input id="inputpl" value="{expenseModel>/project_leader}" required="true" />
-            <Label id="startdatum" text="Startdatum" />
-            <DatePicker id="DatePicker" value="{expenseModel>/start_date}" required="true" />
-            <Label id="categorie" text="Categorie" />
-            <Select id="categorieselect" selectedKey="{expenseModel>/category}" required="true">
-            <items>
-            <core:Item id="categories" key="{category_id}" text="{name}" ></core:Item>
-            </items>
-            </Select>
-            <Label id="financingtype" text="Financing type" />
-            <Select id="financingtypeselect" selectedKey="{expenseModel>/financing_type}" required="true">
-            <items>
-            <core:Item id="financing" key="{financing_id}" text="{name}"></core:Item>
-            </items>
-            </Select>
-            <Label id="aantalmaanden" text="Aantal maanden van uitvoering" />
-            <Input id="inputam" value="{expenseModel>/execution_months}" required="true" />
-            
+            <f:content>
 
+                <!-- Verplichte Velden -->
+                <core:Title id="_IDGenTitle" text="Verplichte velden" />
 
-    
-    </f:SimpleForm>
+                <Label id="projectnaam" text="Projectnaam" />
+                <Input id="inputpn" value="{expenseModel>/project_name}" required="true" />
 
-    <Button id="_IDGenButton" text="Create Expense" press="onProspectCreation" />
+                <Label id="projectleider" text="Projectleider" />
+                <Input id="inputpl" value="{expenseModel>/project_leader}" required="true" />
 
-            
-       
+                <Label id="startdatum" text="Startdatum" />
+                <DatePicker id="DatePicker" value="{expenseModel>/start_date}" required="true" />
+
+                <Label id="categorie" text="Categorie" />
+                <Select id="categorieselect" selectedKey="{expenseModel>/category}" required="true">
+                    <items>
+                        <core:Item id="categories" key="{category_id}" text="{name}" />
+                    </items>
+                </Select>
+
+                <Label id="financingtype" text="Financing type" />
+                <Select id="financingtypeselect" selectedKey="{expenseModel>/financing_type}" required="true">
+                    <items>
+                        <core:Item id="financing" key="{financing_id}" text="{name}" />
+                    </items>
+                </Select>
+
+                <Label id="aantalmaanden" text="Aantal maanden van uitvoering" />
+                <Input id="inputam" value="{expenseModel>/execution_months}" required="true" type="Number" />
+
+                <!-- Optionele Velden -->
+                <core:Title id="_IDGenTitle2" text="Optionele velden" />
+
+                <Label id="groeneenergie" text="Groene energie opbrengst (in % over de totale energie consumptie)" />
+                <Input id="inputge" value="" required="false" type="Number" />
+
+                <Label id="c02" text="Huidige CO2 impact (in kg/ton)" />
+                <Input id="inputc02" value="" required="false" type="Number" />
+
+                <Label id="c02na" text="CO2 impact na realisatie v/h project (in kg/ton)" />
+                <Input id="inputc02na" value="" required="false" type="Number" />
+
+                <Label id="water" text="Huidige waterconsumptie (in m3/tn)" />
+                <Input id="inputwater" value="" required="false" type="Number" />
+
+                <Label id="waterna" text="Waterconsumptie impact na realisatie v/h project (in m3/tn)" />
+                <Input id="inputwaterna" value="" required="false" type="Number" />
+
+                <Label id="greenpayback" text="Green payback (in maanden)" />
+                <Input id="inputgp" value="" required="false" type="Number" />
+
+                <Label id="opmerking" text="Opmerking" />
+                <Input id="inputopmerking" value="" required="false" />
+
+            </f:content>
+
+        </f:SimpleForm>
+
+        <Button id="_IDGenButton" text="Aanmaken Expense" press="onProspectCreation" />
+
     </Page>
 </mvc:View>

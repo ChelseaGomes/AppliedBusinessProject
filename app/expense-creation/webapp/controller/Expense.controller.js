@@ -8,7 +8,7 @@ function (Controller, MessageBox) {
     return Controller.extend("expensecreation.controller.Expense", {
        
         onInit: function () {
-            // Maken van een JSON model waar we de data van onze prospect in kunnen bewaren
+            // Maken van een JSON model waar we de data van onze expense in kunnen bewaren
             let oExpenseModel = new sap.ui.model.json.JSONModel({
 
                 
