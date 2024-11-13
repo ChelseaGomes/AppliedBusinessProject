@@ -1,0 +1,28 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form">
+    <core:Title id="_IDGenTitle3" text="Verplichte velden" />
+    <Label id="_IDGenLabel" text="Projectnaam" />
+    <Input id="_IDGenInput" value="{expenseModel>/project_name}" required="true" />
+
+    <Label id="_IDGenLabel1" text="Projectleider" />
+    <Input id="_IDGenInput1" value="{expenseModel>/project_leader}" required="true" />
+
+    <Label id="_IDGenLabel2" text="Startdatum" />
+    <DatePicker id="_IDGenDatePicker" value="{expenseModel>/start_date}" required="true" />
+
+    <Label id="_IDGenLabel3" text="Categorie" />
+    <Select id="_IDGenSelect" selectedKey="{expenseModel>/category}" required="true">
+        <items>
+            <core:Item id="_IDGenItem" key="{category_id}" text="{name}" />
+        </items>
+    </Select>
+
+    <Label id="_IDGenLabel4" text="Financing type" />
+    <Select id="_IDGenSelect1" selectedKey="{expenseModel>/financing_type}" required="true">
+        <items>
+            <core:Item id="_IDGenItem1" key="{financing_id}" text="{name}" />
+        </items>
+    </Select>
+
+    <Label id="_IDGenLabel5" text="Aantal maanden van uitvoering" />
+    <Input id="_IDGenInput2" value="{expenseModel>/execution_months}" required="true" type="Number" />
+</core:FragmentDefinition>
