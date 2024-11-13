@@ -9,8 +9,10 @@ context ExpenseCreationApp {
         project_leader    : String(100);
         start_date        : Date;
         category          : Association to Categories;
+        observation       : String(200);
         financing_type    : Association to FinancingType;
         execution_months  : Int16;
+        environment       : Association to Enviroment;
     }
 
     //entity voor financingtype

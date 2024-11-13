@@ -16,7 +16,8 @@
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-expense-creation": "cds watch --open expense-creation/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch-expense-creation": "cds watch --open expense-creation/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-expensemanagement": "cds watch --open expensemanagement/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
@@ -28,8 +29,11 @@
         }
       }
     },
-    "data":{
+    "data": {
       "db": "./data"
     }
-  }
+  },
+  "sapux": [
+    "app/expensemanagement"
+  ]
 }
