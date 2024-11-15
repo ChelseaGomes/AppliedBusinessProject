@@ -10,14 +10,27 @@
     <DatePicker id="_IDGenDatePicker" value="{expenseModel>/start_date}" required="true" />
 
     <Label id="_IDGenLabel3" text="Categorie" />
-    <Select id="_IDGenSelect" selectedKey="{expenseModel>/category}" required="true">
+    <Select id="_IDGenSelect" forceSelection="false" selectedKey="{expenseModel>/category}" required="true"
+    items="{ 
+    path:'/Categories',
+    sorter: {path:'name'}
+    
+     }"
+    >
         <items>
             <core:Item id="_IDGenItem" key="{category_id}" text="{name}" />
         </items>
     </Select>
 
     <Label id="_IDGenLabel4" text="Financing type" />
-    <Select id="_IDGenSelect1" selectedKey="{expenseModel>/financing_type}" required="true">
+    <Select id="_IDGenSelect1" forceSelection="false" selectedKey="{expenseModel>/financing_type}" required="true"
+    items="{ 
+    path:'/FinancingType',
+    sorter: {path:'name'}
+    
+     }"
+    
+    >
         <items>
             <core:Item id="_IDGenItem1" key="{financing_id}" text="{name}" />
         </items>
