@@ -17,7 +17,7 @@
         },
         "dataSources": {
             "mainService": {
-                "uri": "ZSD_02_EXPENSE_TOOL",
+                "uri": "odata/v4/expense/",
                 "type": "OData",
                 "settings": {
                     "annotations": [],

@@ -4,7 +4,7 @@ context ExpenseCreationApp {
 
     //entity voor expenses
     entity Expenses: cuid, managed {
-        
+        expense_id        : UUID;
         project_name      : String(100);
         project_leader    : String(100);
         start_date        : Date;
@@ -29,7 +29,7 @@ context ExpenseCreationApp {
 
     //entity voor environment 
     entity Enviroment: cuid, managed {
-        expense                 : Association to Expenses;
+        expense_ID                    : UUID;
         current_co2_impact            : Decimal(10,2);
         expected_co2_impact           : Decimal(10,2);
         current_water_consumption     : Decimal(10,2);

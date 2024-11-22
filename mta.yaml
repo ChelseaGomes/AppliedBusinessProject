@@ -9,9 +9,8 @@ build-parameters:
   before-all:
     - builder: custom
       commands:
-        - npm install
+        - npm ci
         - npx cds build --production
-        - mkdir -p resources
 modules:
   - name: appliedbusinessproject-srv
     type: nodejs
@@ -41,18 +40,18 @@ modules:
 
   - name: appliedbusinessproject-app-deployer
     type: com.sap.application.content
-    path: .
+    path: gen
     requires:
       - name: appliedbusinessproject-html5-repo-host
         parameters:
           content-target: true
     build-parameters:
-      build-result: resources/
+      build-result: app/
       requires:
         - name: appliedbusinessprojectexpensecreation
           artifacts:
             - expense-creation.zip
-          target-path: resources/
+          target-path: app/
         - name: appliedbusinessprojectexpensemanagement
           artifacts:
             - expensemanagement.zip
@@ -84,6 +83,10 @@ modules:
   - name: appliedbusinessproject-destinations
     type: com.sap.application.content
     requires:
+      - name: appliedbusinessproject-auth
+        parameters:
+          service-key:
+            name: appliedbusinessproject-auth-key
       - name: appliedbusinessproject-html5-repo-host
         parameters:
           service-key:
@@ -103,7 +106,11 @@ modules:
               ServiceInstanceName: appliedbusinessproject-html5-repo-host
               ServiceKeyName: appliedbusinessproject-html5-repo-host-key
               sap.cloud.service: appliedbusinessproject.service
-    
+            - Name: appliedbusinessproject-auth
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: appliedbusinessproject-auth
+              ServiceKeyName: appliedbusinessproject-auth-key
+              sap.cloud.service: appliedbusinessproject.service
 
 resources:
   - name: appliedbusinessproject-destination
@@ -117,24 +124,35 @@ resources:
           instance:
             existing_destinations_policy: update
             destinations:
+              - Name: appliedbusinessproject-srv-api
+                URL: ~{srv-api/srv-url}
+                Authentication: NoAuthentication
+                Type: HTTP
+                ProxyType: Internet
+                HTML5.ForwardAuthToken: true
+                HTML5.DynamicDestination: true
               - Name: ui5
                 URL: https://ui5.sap.com
                 Authentication: NoAuthentication
                 Type: HTTP
                 ProxyType: Internet
-
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
   - name: appliedbusinessproject-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
-
   - name: appliedbusinessproject-html5-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
       service-plan: app-host
-
   - name: appliedbusinessproject-auth
     type: org.cloudfoundry.managed-service
     parameters:
