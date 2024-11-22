@@ -29,6 +29,7 @@ modules:
     requires:
       - name: appliedbusinessproject-destination
       - name: appliedbusinessproject-db
+      - name: appliedbusinessproject-auth
 
   - name: appliedbusinessproject-db-deployer
     type: hdb
@@ -51,7 +52,7 @@ modules:
         - name: appliedbusinessprojectexpensecreation
           artifacts:
             - expense-creation.zip
-          target-path: resoures/
+          target-path: resources/
         - name: appliedbusinessprojectexpensemanagement
           artifacts:
             - expensemanagement.zip
@@ -102,11 +103,7 @@ modules:
               ServiceInstanceName: appliedbusinessproject-html5-repo-host
               ServiceKeyName: appliedbusinessproject-html5-repo-host-key
               sap.cloud.service: appliedbusinessproject.service
-            - Name: appliedbusinessproject-auth
-              Authentication: OAuth2UserTokenExchange
-              ServiceInstanceName: appliedbusinessproject-auth
-              ServiceKeyName: appliedbusinessproject-auth-key
-              sap.cloud.service: appliedbusinessproject.service
+    
 
 resources:
   - name: appliedbusinessproject-destination
@@ -120,33 +117,30 @@ resources:
           instance:
             existing_destinations_policy: update
             destinations:
-              - Name: ZSD_02_EXPENSE_TOOL
-                URL: https://a03z.ucc.ovgu.de/sap/opu/odata/sap/ZSD_02_GW_EXPENSE_TOOL_SRV
-                Authentication: BasicAuthentication
-                ProxyType: Internet
-                Type: HTTP
-                HTML5.ForwardAuthToken: true
-                HTML5.DynamicsDestination: true
               - Name: ui5
                 URL: https://ui5.sap.com
                 Authentication: NoAuthentication
                 Type: HTTP
                 ProxyType: Internet
-            
-    requires:
-      - name: srv-api
-        group: destinations
-        properties:
-          name: srv-api # must be used in xs-app.json as well
-          url: ~{srv-url}
-          forwardAuthToken: true
+
   - name: appliedbusinessproject-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
+
   - name: appliedbusinessproject-html5-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
       service-plan: app-host
+
+  - name: appliedbusinessproject-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: appliedbusinessproject-${org}-${space}
+        tenant-mode: dedicated

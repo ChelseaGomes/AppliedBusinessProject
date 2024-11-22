@@ -1,0 +1,11 @@
+{
+    "routes": [
+      {
+        "source": "^/odata/(.*)$",
+        "target": "/odata/$1",
+        "destination": "ZSD_02_EXPENSE_TOOL",
+        "authenticationType": "BasicAuthentication"
+      }
+    ]
+  }
+  
