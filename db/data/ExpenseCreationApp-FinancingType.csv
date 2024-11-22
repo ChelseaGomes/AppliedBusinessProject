@@ -1,4 +1,4 @@
-financing_id,name,description
-1,Capex,Financing Type CAPEX
-2,Lease,Financing Type Leasing
-3,Capex & Lease,Financing Type CAPEX and Leasing (Mix)
+name,description
+Capex,Financing Type CAPEX
+Lease,Financing Type Leasing
+Capex & Lease,Financing Type CAPEX and Leasing (Mix)
