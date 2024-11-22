@@ -12,7 +12,6 @@ build-parameters:
         - npm install
         - npx cds build --production
         - mkdir -p resources
-        - cp workzone/cdm.json resources/cdm.json
 modules:
   - name: appliedbusinessproject-srv
     type: nodejs
@@ -52,7 +51,7 @@ modules:
         - name: appliedbusinessprojectexpensecreation
           artifacts:
             - expense-creation.zip
-          target-path: resources/
+          target-path: resoures/
         - name: appliedbusinessprojectexpensemanagement
           artifacts:
             - expensemanagement.zip
@@ -65,7 +64,7 @@ modules:
       build-result: dist
       builder: custom
       commands:
-        - npm install
+        - npm ci
         - npm run build
       supported-platforms:
         []
@@ -76,7 +75,7 @@ modules:
       build-result: dist
       builder: custom
       commands:
-        - npm install
+        - npm ci
         - npm run build
       supported-platforms:
         []
@@ -121,18 +120,19 @@ resources:
           instance:
             existing_destinations_policy: update
             destinations:
-              - Name: appliedbusinessproject-srv-api
-                URL: ~{srv-api/srv-url}
-                Authentication: NoAuthentication
-                Type: HTTP
+              - Name: ZSD_02_EXPENSE_TOOL
+                URL: https://a03z.ucc.ovgu.de/sap/opu/odata/sap/ZSD_02_GW_EXPENSE_TOOL_SRV
+                Authentication: BasicAuthentication
                 ProxyType: Internet
+                Type: HTTP
                 HTML5.ForwardAuthToken: true
-                HTML5.DynamicDestination: true
+                HTML5.DynamicsDestination: true
               - Name: ui5
                 URL: https://ui5.sap.com
                 Authentication: NoAuthentication
                 Type: HTTP
                 ProxyType: Internet
+            
     requires:
       - name: srv-api
         group: destinations
