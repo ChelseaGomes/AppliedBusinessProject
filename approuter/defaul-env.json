@@ -6,7 +6,7 @@
             "forwardAuthToken": true
         },
         {
-            "name": "MySAPSystem",
+            "name": "ZSD_02_EXPENSE_TOOL",
             "url": "https://a03z.ucc.ovgu.de/sap/opu/odata/sap/ZSD_02_GW_EXPENSE_TOOL_SRV/",
             "forwardAuthToken": true
         }

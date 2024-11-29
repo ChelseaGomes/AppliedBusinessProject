@@ -1,10 +1,12 @@
 {
+   "authenticationMethod": "route",
     "routes": [
       {
         "source": "^/odata/(.*)$",
         "target": "/odata/$1",
-        "destination": "ZSD_02_EXPENSE_TOOL",
-        "authenticationType": "BasicAuthentication"
+        "destination": "MySAPSystem",
+        "authenticationType": "xsuaa",
+        "csrfProtection": false
       }
     ]
   }

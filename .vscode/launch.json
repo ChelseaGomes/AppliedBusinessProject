@@ -1,7 +1,6 @@
 {
   "version": "0.2.0",
   "configurations": [
-
     {
       "name": "cds serve",
       "request": "launch",
@@ -16,13 +15,12 @@
       "skipFiles": [
         "<node_internals>/**"
       ]
-      
     },
     {
       "command": "cds watch --profile hybrid",
       "name": "Run hybrid profile",
       "request": "launch",
       "type": "node-terminal"
-    },
+    }
   ]
 }

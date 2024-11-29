@@ -11,7 +11,7 @@ module.exports = cds.service.impl(async (srv) => {
         const getData = async (endpoint) => {
             try {
                 const response = await httpclient.executeHttpRequest(
-                    { destinationName: "ZSD_02_EXPENSE_TOOL" },
+                    { destinationName: "ZSD_02_EXPENSE_TOOL"},
                     {
                         method: 'GET',
                         url: `/${endpoint}`,
@@ -32,7 +32,7 @@ module.exports = cds.service.impl(async (srv) => {
         };
 
         
-        srv.on('getExpenses', async () => {
+        srv.on("READ", Expenses, async (req) => {
             const expenses = await getData('Expenses');
             return expenses;
         });

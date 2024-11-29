@@ -1,6 +1,13 @@
 {
-    "authenticationMethod": "none",
+    "authenticationMethod": "route",
     "routes": [
+      {
+        "source": "^/api_docii/(.*)$",
+        "target": "/$1",
+        "destination": "api-docii",
+        "authenticationType": "xsuaa",
+        "csrfProtection": false
+      },
       {
         "source": "^/sap_ias/(.*)$",
         "target": "/$1",
