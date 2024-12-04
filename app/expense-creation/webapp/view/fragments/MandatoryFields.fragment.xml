@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form">
-    <core:Title id="_IDGenTitle3" text="Verplichte velden" />
+    <core:Title id="_IDGenTitle3" text="Expense: Algemene Informatie" />
     <Label id="_IDGenLabel" text="Projectnaam" />
     <Input id="_IDGenInput" value="{expenseModel>/project_name}" required="true" />
 

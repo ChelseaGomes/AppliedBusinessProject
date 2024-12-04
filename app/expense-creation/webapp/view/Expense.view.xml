@@ -6,37 +6,126 @@
     xmlns:l="sap.ui.layout"
     controllerName="expensecreation.controller.Expense" 
     displayBlock="true">
-    
+
     <Page id="page" title="{i18n>title}">
 
-        <f:SimpleForm 
-            id="expensecreationform"
-            editable="true"
-            layout="ResponsiveGridLayout"
-            labelSpanXL="4"
-            labelSpanL="3"
-            labelSpanM="4"
-            labelSpanS="12"
-            adjustLabelSpan="false"
-            emptySpanXL="0"
-            emptySpanL="4"
-            emptySpanM="0"
-            emptySpanS="0"
-            columnsXL="2"
-            columnsL="1"
-            columnsM="1"
-            singleContainerFullSize="false">
+        <!-- Toolbar for the Header -->
+        <Bar id="_IDGenBar1" class="sapUiResponsiveMargin">
+            <contentMiddle>
+                <HBox id="_IDGenHBox4">
+                    <!-- Voeg een afbeelding of logo toe -->
+                    <Image id="_IDGenImage" src="sap-icon://product" height="2rem" width="2rem" />
+                    <Title id="_IDGenTitle" text="{i18n>headerTitle}" class="sapUiTinyMarginBegin" />
+                </HBox>
+            </contentMiddle>
+        </Bar>
 
-            <f:content>
-                <!-- Laad verplichte velden fragment -->
-                <core:Fragment fragmentName="expensecreation.view.fragments.MandatoryFields" type="XML" />
+        <!-- Tab Container for Sections -->
+        <IconTabBar  id="_IDGenIconTabBar" selectedKey="generalInfo" class="sapUiResponsiveMargin" >
+            
+            <!-- Tab 1: Algemene informatie -->
+            <items>
+                <IconTabFilter 
+                    id="_IDGenIconTabFilter" 
+                    text="Algemene informatie" 
+                    key="generalInfo" 
+                    icon="sap-icon://activity-items"
+                    design="Horizontal">
+                    <VBox id="_IDGenVBox" class="sapUiResponsiveMargin">
+                        <f:SimpleForm 
+                            id="expensecreationform"
+                            editable="true"
+                            layout="ResponsiveGridLayout"
+                            class="fSimpleForm"
+                            labelSpanXL="3"
+                            labelSpanL="3"
+                            labelSpanM="3"
+                            labelSpanS="12"
+                            adjustLabelSpan="false"
+                            emptySpanXL="4"
+                            emptySpanL="4"
+                            emptySpanM="4"
+                            emptySpanS="0"
+                            columnsXL="1"
+                            columnsL="1"
+                            columnsM="1"
+                            singleContainerFullSize="false">
 
-                <!-- Laad optionele velden fragment -->
-                <core:Fragment fragmentName="expensecreation.view.fragments.OptionalFields" type="XML" />
-            </f:content>
-        </f:SimpleForm>
+                            <f:content>
+                                <!-- Laad verplichte velden fragment -->
+                                <core:Fragment fragmentName="expensecreation.view.fragments.MandatoryFields" type="XML" />
+                            </f:content>
+                        </f:SimpleForm>
+                        
+                        <!-- Navigation Buttons -->
+                        <HBox id="_IDGenHBox1" justifyContent="SpaceBetween">
+                            <Button id="_IDGenButton" text="Terug" type="Transparent" press="onPreviousTab" enabled="false" />
+                            <Button id="_IDGenButton1" text="Volgende" type="Emphasized" press="onNextTab" />
+                        </HBox>
+                    </VBox>
+                </IconTabFilter>
+                
+                <!-- Tab 2: Financieel en Operationeel -->
+                <IconTabFilter 
+                    id="_IDGenIconTabFilter1" 
+                    text="Financieel en Operationeel" 
+                    key="attachments" 
+                    icon="sap-icon://money-bills"
+                    design="Horizontal">
+                    <VBox id="_IDGenVBox1" class="sapUiResponsiveMargin">
+                        <f:SimpleForm 
+                            id="optionalfields"
+                            editable="true"
+                            layout="ResponsiveGridLayout"
+                            class="fSimpleForm"
+                            labelSpanXL="3"
+                            labelSpanL="3"
+                            labelSpanM="3"
+                            labelSpanS="12"
+                            adjustLabelSpan="false"
+                            emptySpanXL="4"
+                            emptySpanL="4"
+                            emptySpanM="4"
+                            emptySpanS="0"
+                            columnsXL="1"
+                            columnsL="1"
+                            columnsM="1"
+                            singleContainerFullSize="false">
 
-        <Button id="_IDGenButton" text="Create" press="onExpenseCreation" />
+                            <f:content>
+                                <!-- Laad optionele velden fragment -->
+                                <core:Fragment fragmentName="expensecreation.view.fragments.OptionalFields" type="XML" />
+                            </f:content>
+                        </f:SimpleForm>
+                        
+                        <!-- Navigation Buttons -->
+                        <HBox id="_IDGenHBox2" justifyContent="SpaceBetween">
+                            <Button id="_IDGenButton2" text="Terug" type="Transparent" press="onPreviousTab" />
+                            <Button id="_IDGenButton5" text="Volgende" type="Emphasized" press="onNextTab" />
+                        </HBox>
+                    </VBox>
+                </IconTabFilter>
+                
+                <!-- Tab 3: Opmerkingen -->
+                <IconTabFilter 
+                    id="_IDGenIconTabFilter2" 
+                    text="Opmerkingen" 
+                    key="optionalComments" 
+                    icon="sap-icon://notes"
+                    design="Horizontal">
+                    <VBox id="_IDGenVBox2" class="sapUiResponsiveMargin">
+                        <Label id="_IDGenLabel12" text="Opmerking" />
+                        <TextArea id="_IDGenTextArea" rows="5" value="{/optionalComments}" width="100%" />
+                        
+                        <!-- Navigation Buttons -->
+                        <HBox id="_IDGenHBox3" justifyContent="SpaceBetween">
+                            <Button id="_IDGenButton6" text="Terug" type="Transparent" press="onPreviousTab" />
+                            <Button id="_IDGenButton7" text="Voltooien" type="Accept" press="onComplete" />
+                        </HBox>
+                    </VBox>
+                </IconTabFilter>
+            </items>
+        </IconTabBar>
 
     </Page>
 </mvc:View>

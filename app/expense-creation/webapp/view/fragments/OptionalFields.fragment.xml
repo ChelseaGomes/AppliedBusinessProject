@@ -18,6 +18,4 @@
     <Label id="_IDGenLabel11" text="Green payback (in maanden)" />
     <Input id="_IDGenInput8" value="{expenseModel>/green_payback}" required="false" type="Number" />
 
-    <Label id="_IDGenLabel12" text="Opmerking" />
-    <Input id="_IDGenInput9" value="{expenseModel>/description}" required="false" />
 </core:FragmentDefinition>
