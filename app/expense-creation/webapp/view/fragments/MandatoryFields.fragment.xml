@@ -31,4 +31,7 @@
 
     <Label id="_IDGenLabel5" text="Aantal maanden van uitvoering" />
     <Input id="_IDGenInput2" value="{expenseModel>/execution_months}" required="true" type="Number" />
+
+    <Label id="_IDGenLabel21" text="Bedrag van de expense (€)" />
+            <Input id="_IDGenInput9" value="{expenseModel>/expense_amount}" type="Number" required="true" />
 </core:FragmentDefinition>

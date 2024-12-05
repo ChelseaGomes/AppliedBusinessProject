@@ -73,6 +73,7 @@
         "settings": {
           "bundleName": "expensecreation.i18n.i18n"
         }
+        
       },
       "": {
         "dataSource": "mainService",

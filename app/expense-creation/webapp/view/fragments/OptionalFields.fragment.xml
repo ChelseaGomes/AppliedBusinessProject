@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form">
-    <core:Title id="_IDGenTitle4" text="Optionele velden" />
-    <Label id="_IDGenLabel6" text="Groene energie opbrengst (in % over de totale energie consumptie)" />
+    <core:Title id="_IDGenTitle4" text="Expense: Financieel en operationeel" />
+    <Label id="_IDGenLabel6" text="Groene energie opbrengst (in %)" />
     <Input id="_IDGenInput3" value="{expenseModel>/green_energy_output}" required="false" type="Number" />
 
     <Label id="_IDGenLabel7" text="Huidige CO2 impact (in kg/ton)" />
@@ -12,7 +12,7 @@
     <Label id="_IDGenLabel9" text="Huidige waterconsumptie (in m3/tn)" />
     <Input id="_IDGenInput6" value="{expenseModel>/current_water_consumption}" required="false" type="Number" />
 
-    <Label id="_IDGenLabel10" text="Waterconsumptie impact na realisatie v/h project (in m3/tn)" />
+    <Label id="_IDGenLabel10" text="Waterconsumptie impact na project (in m3/tn)" />
     <Input id="_IDGenInput7" value="{expenseModel>/expected_water_consumption}" required="false" type="Number" />
 
     <Label id="_IDGenLabel11" text="Green payback (in maanden)" />

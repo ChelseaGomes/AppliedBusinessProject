@@ -1,47 +1,129 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/m/MessageBox"
-], function (Controller, MessageBox) {
+    "sap/m/MessageBox",
+    "sap/ui/model/json/JSONModel"
+], function (Controller, MessageBox, JSONModel) {
     "use strict";
 
     return Controller.extend("expensecreation.controller.Expense", {
+
         /**
          * Functie voor initiële setup.
          */
         onInit: function () {
-            // Maken van een JSON-model voor de expense data
-            let oExpenseModel = new sap.ui.model.json.JSONModel({
+            // JSON-model voor expense data
+            let oExpenseModel = new JSONModel({
                 project_name: "",
                 project_leader: "",
-                start_date: null,
+                start_date: this._getDefaultStartDate(),
                 category: "",
                 financing_type: "",
                 execution_months: "",
+                expense_amount: "",
                 current_co2_impact: "",
                 expected_co2_impact: "",
                 current_water_consumption: "",
                 expected_water_consumption: "",
                 green_payback: "",
                 green_energy_output: "",
-                description: ""
+                description: "",
+                submittedBy: "Gebruiker", // Dummy data, kan worden aangepast
+                submittedOn: new Date().toISOString(),
+                status: "submitted"
             });
 
-            // Zet het model in de huidige View
+            // Set het model in de view
             this.getView().setModel(oExpenseModel, "expenseModel");
+        },
+
+        /**
+         * Bereken standaard startdatum: huidige dag + 1 maand.
+         */
+        _getDefaultStartDate: function () {
+            let oDate = new Date();
+            oDate.setMonth(oDate.getMonth() + 1);
+            return oDate.toISOString().split("T")[0];
+        },
+
+        /**
+         * Valideer de expense voordat deze wordt ingediend.
+         */
+        _validateExpenseData: function () {
+            const oData = this.getView().getModel("expenseModel").getData();
+            const today = new Date();
+            const expenseDate = new Date(oData.start_date);
+
+            // Controleer verplichte velden
+            const mandatoryFields = [
+                "project_name",
+                "project_leader",
+                "start_date",
+                "category",
+                "financing_type",
+                "execution_months",
+                "expense_amount"
+            ];
+            const missingFields = mandatoryFields.filter(field => !oData[field]);
+
+            if (missingFields.length > 0) {
+                return {
+                    valid: false,
+                    message: "Vul alle verplichte velden in."
+                };
+            }
+
+            // Controleer startdatum (niet eerder dan 2 weken vanaf vandaag)
+            if (expenseDate < today.setDate(today.getDate() + 14)) {
+                return {
+                    valid: false,
+                    message: "De startdatum moet minstens 2 weken in de toekomst liggen."
+                };
+            }
+
+            // Controleer bedragen voor CapEx en OpEx
+            if (oData.financing_type === "CapEx" && oData.expense_amount < 10000) {
+                return {
+                    valid: false,
+                    message: "Een CapEx-aanvraag moet minstens €10.000 bedragen."
+                };
+            }
+            if (oData.financing_type === "OpEx" && oData.expense_amount > 50000) {
+                return {
+                    valid: false,
+                    message: "Een OpEx-aanvraag mag niet meer dan €50.000 bedragen."
+                };
+            }
+
+            // Controleer totaalbedrag (maximaal €150.000)
+            if (oData.expense_amount > 150000) {
+                return {
+                    valid: false,
+                    message: "Het totaalbedrag mag niet meer dan €150.000 bedragen."
+                };
+            }
+
+            // Controleer aantal maanden (1 <= maanden <= 96)
+            if (oData.execution_months < 1 || oData.execution_months > 96) {
+                return {
+                    valid: false,
+                    message: "Het aantal maanden moet tussen 1 en 96 liggen."
+                };
+            }
+
+            return { valid: true };
         },
 
         /**
          * Functie om naar het volgende tabblad te navigeren.
          */
         onNextTab: function () {
-            let oIconTabBar = this.getView().byId("_IDGenIconTabBar"); // Haal IconTabBar op
-            let sSelectedKey = oIconTabBar.getSelectedKey(); // Bepaal huidige tab
-            let aItems = oIconTabBar.getItems(); // Alle tabs
+            const oIconTabBar = this.getView().byId("_IDGenIconTabBar");
+            const sSelectedKey = oIconTabBar.getSelectedKey();
+            const aItems = oIconTabBar.getItems();
 
-            // Zoek het volgende tabblad
             for (let i = 0; i < aItems.length; i++) {
                 if (aItems[i].getKey() === sSelectedKey && i + 1 < aItems.length) {
-                    oIconTabBar.setSelectedKey(aItems[i + 1].getKey()); // Navigeer naar het volgende tabblad
+                    oIconTabBar.setSelectedKey(aItems[i + 1].getKey());
                     break;
                 }
             }
@@ -51,62 +133,60 @@ sap.ui.define([
          * Functie om naar het vorige tabblad te navigeren.
          */
         onPreviousTab: function () {
-            let oIconTabBar = this.getView().byId("_IDGenIconTabBar"); // Haal IconTabBar op
-            let sSelectedKey = oIconTabBar.getSelectedKey(); // Bepaal huidige tab
-            let aItems = oIconTabBar.getItems(); // Alle tabs
+            const oIconTabBar = this.getView().byId("_IDGenIconTabBar");
+            const sSelectedKey = oIconTabBar.getSelectedKey();
+            const aItems = oIconTabBar.getItems();
 
-            // Zoek het vorige tabblad
             for (let i = 0; i < aItems.length; i++) {
                 if (aItems[i].getKey() === sSelectedKey && i - 1 >= 0) {
-                    oIconTabBar.setSelectedKey(aItems[i - 1].getKey()); // Navigeer naar het vorige tabblad
+                    oIconTabBar.setSelectedKey(aItems[i - 1].getKey());
                     break;
                 }
             }
         },
 
         /**
-         * Functie om de gegevens te voltooien en te verzenden.
+         * Controleer de data in het Opmerkingen-tabblad.
          */
-        onComplete: function () {
-            var oModel = this.getOwnerComponent().getModel(); // Haal OData-model op
-            var oListBinding = oModel.bindList("/Expenses", undefined, undefined, undefined, {
-                $$updateGroupId: "createExpense"
-            });
-
-            // Maak nieuwe context met data uit het model
-            var oContext = oListBinding.create(this.getView().getModel("expenseModel").getData());
-
-            // Verstuur de gegevens naar de backend met batch
-            oModel.submitBatch("createExpense")
-                .then(function () {
-                    MessageBox.alert("De gegevens zijn succesvol opgeslagen.", {
-                        icon: sap.m.MessageBox.Icon.SUCCESS,
-                        title: "Succes"
-                    });
-                })
-                .catch(function (oError) {
-                    MessageBox.alert(oError.message, {
-                        icon: sap.m.MessageBox.Icon.ERROR,
-                        title: "Fout"
-                    });
-                });
+        onCheck: function () {
+            const validation = this._validateExpenseData();
+            if (!validation.valid) {
+                MessageBox.error(validation.message);
+                return;
+            }
+            MessageBox.success("Alle gegevens zijn correct ingevuld.");
+            this.getView().byId("_IDGenIconTabBar").setSelectedKey("overview");
         },
 
         /**
-         * Functie om de huidige expense te verwijderen.
+         * Verstuur de expense naar de backend.
          */
-        onDelete: function () {
-            MessageBox.confirm("Weet u zeker dat u deze expense wilt verwijderen?", {
-                actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-                onClose: function (sAction) {
-                    if (sAction === MessageBox.Action.YES) {
-                        MessageBox.alert("De expense is verwijderd.", {
-                            icon: sap.m.MessageBox.Icon.SUCCESS,
-                            title: "Succes"
+        onComplete: function () {
+            const oModel = this.getOwnerComponent().getModel();
+            const oExpenseData = this.getView().getModel("expenseModel").getData();
+
+            MessageBox.confirm("Wilt u de expense indienen?", {
+                actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                onClose: (sAction) => {
+                    if (sAction === MessageBox.Action.OK) {
+                        oModel.create("/Expenses", oExpenseData, {
+                            success: function () {
+                                MessageBox.success("De expense is succesvol ingediend.");
+                            },
+                            error: function (oError) {
+                                MessageBox.error("Er is een fout opgetreden: " + oError.message);
+                            }
                         });
                     }
                 }
             });
+        },
+
+        /**
+         * Navigeer terug.
+         */
+        onNavBack: function () {
+            window.history.back();
         }
     });
 });
