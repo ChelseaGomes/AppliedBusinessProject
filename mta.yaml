@@ -143,11 +143,6 @@ resources:
     service-plan: lite
   requires:
   - name: srv-api
-    group: destinations
-    properties:
-      forwardAuthToken: true
-      name: srv-api
-      url: ~{srv-url}
 - name: appliedbusinessproject-db
   type: com.sap.xs.hdi-container
   parameters:

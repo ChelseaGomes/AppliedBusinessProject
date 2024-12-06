@@ -2,11 +2,11 @@
   "authenticationMethod": "route",
   "routes": [
     {
-      "source": "^/?odata/(.*)$",
+      "source": "^/odata/(.*)$",
       "target": "/odata/$1",
       "destination": "appliedbusinessproject-srv-api",
-      "csrfProtection": true,
-      "authenticationType": "xsuaa"
+      "authenticationType": "xsuaa",
+      "csrfProtection": false
     },
     {
       "source": "^(.*)$",

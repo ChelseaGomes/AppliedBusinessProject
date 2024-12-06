@@ -9,8 +9,9 @@
     "@sap-cloud-sdk/core": "^1.54.2",
     "@sap-cloud-sdk/http-client": "^3.23.0",
     "@sap/cds": "^8",
-    "express": "^4",
-    "@sap/xssec": "^4"
+    "@sap/hana-client": "^2.22.32",
+    "@sap/xssec": "^4",
+    "express": "^4"
   },
   "devDependencies": {
     "@cap-js/cds-types": "^0.6",
@@ -31,35 +32,33 @@
   },
   "cds": {
     "requires": {
-      "API_EXPENSE_SERVICE": {
-        "kind": "odata",
-        "model": "srv/expenseservice",
-        "credentials": {
-          "destination": "MySAPSystem"
+      "[development]": {
+        "db": {
+          "kind": "sqlite",
+          "credentials": {
+            "database": ":memory:"
+          }
         }
       },
-      "destinations": true,
-      "html5-repo": true,
-      "workzone": true,
+      "[hybrid]": {
+        "auth": {
+          "kind": "jwt-auth"
+        },
+        "db": {
+          "kind": "hana"
+        }
+      },
       "[production]": {
-        "auth": "xsuaa"
+        "db": {
+          "kind": "hana"
+        },
+        "auth": {
+          "kind": "xsuaa"
+        }
       }
-    },
-    "data": {
-      "db": "./data"
     }
   },
   "sapux": [
     "app/expensemanagement"
-  ],
-  "requires": {
-    "auth": {
-      "kind": "xsuaa"
-    },
-    "[hybrid]": {
-      "auth": {
-        "kind": "jwt-auth"
-      }
-    }
-  }
+  ]
 }
