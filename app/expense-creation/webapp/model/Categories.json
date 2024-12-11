@@ -1,0 +1,36 @@
+{
+    "Categories": [
+        {
+            "name": "C1 - Capacity & Innovation",
+            "description": "Innovatieve projecten & capaciteitsuitbreidingen"
+        },
+        {
+            "name": "C2 - Productivity",
+            "description": "Productiviteits uitbreidingen"
+        },
+        {
+            "name": "C3 - Green Capex",
+            "description": "Groene investeringen"
+        },
+        {
+            "name": "C4 - Image and Maintenance",
+            "description": "Marketing"
+        },
+        {
+            "name": "C5 - IT & Data",
+            "description": "IT"
+        },
+        {
+            "name": "C6 - Employees",
+            "description": "Werknemers tevreden houden"
+        },
+        {
+            "name": "C7 - Safety",
+            "description": "Veiligheidsinvesteringen"
+        },
+        {
+            "name": "C8 - Growth",
+            "description": "Groeiinvesteringen"
+        }
+    ]
+}

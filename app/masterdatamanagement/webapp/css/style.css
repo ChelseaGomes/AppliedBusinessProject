@@ -1,1 +1,13 @@
-/* Enter your custom styles here */
+/* Styling voor de afbeelding */
+.image-container {
+    margin-top: 12px; /* Ruimte boven de afbeelding */
+    text-align: center;
+}
+
+.decorative-image {
+    max-width: 30%;
+    height: 50%; /* Houd de verhouding van de afbeelding */
+    border-radius: 40px; /* Ronde hoeken indien gewenst */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Schaduw voor een moderne look */
+}
+

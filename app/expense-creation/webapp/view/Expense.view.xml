@@ -113,7 +113,9 @@
                     text="Overzicht" 
                     key="overview">
                     <VBox id="_IDGenVBox3" class="sapUiResponsiveMargin">
-                     
+                      <List id="overviewList" items="{overviewModel>/overview}">
+            <StandardListItem title="{overviewModel>fieldName}" description="{overviewModel>fieldValue}" />
+        </List>
                         
 
                         <!-- Navigation Buttons -->
