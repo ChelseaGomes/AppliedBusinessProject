@@ -1,0 +1,16 @@
+{
+    "FinancingTypes": [
+        {
+            "name": "Capex",
+            "description": "Financing Type CAPEX"
+        },
+        {
+            "name": "Lease",
+            "description": "Financing Type Leasing"
+        },
+        {
+            "name": "Capex & Lease",
+            "description": "Financing Type CAPEX and Leasing (Mix)"
+        }
+    ]
+}

@@ -11,6 +11,17 @@ sap.ui.define([
          * Functie voor initiële setup.
          */
         onInit: function () {
+
+            // Laad mockdata voor Financing Types
+            let oFinancingTypesModel = new sap.ui.model.json.JSONModel();
+            oFinancingTypesModel.loadData("model/FinancingTypes.json");
+            this.getView().setModel(oFinancingTypesModel, "financingTypesModel");
+
+            // Laad mockdata voor Categories
+            let oCategoriesModel = new sap.ui.model.json.JSONModel();
+            oCategoriesModel.loadData("model/Categories.json");
+            this.getView().setModel(oCategoriesModel, "categoriesModel");
+
             // JSON-model voor expense data
             let oExpenseModel = new JSONModel({
                 project_name: "",
@@ -146,6 +157,32 @@ sap.ui.define([
         },
 
         /**
+         * Functie om overzichtsgegevens voor te bereiden.
+         */
+        onPrepareOverview: function () {
+            const oExpenseData = this.getView().getModel("expenseModel").getData();
+            const aOverviewData = [
+                { fieldName: "Projectnaam", fieldValue: oExpenseData.project_name },
+                { fieldName: "Projectleider", fieldValue: oExpenseData.project_leader },
+                { fieldName: "Startdatum", fieldValue: oExpenseData.start_date },
+                { fieldName: "Categorie", fieldValue: oExpenseData.category },
+                { fieldName: "Financieringstype", fieldValue: oExpenseData.financing_type },
+                { fieldName: "Uitvoeringsmaanden", fieldValue: oExpenseData.execution_months },
+                { fieldName: "Bedrag", fieldValue: oExpenseData.expense_amount },
+                { fieldName: "CO2 Impact Huidig", fieldValue: oExpenseData.current_co2_impact },
+                { fieldName: "CO2 Impact Verwacht", fieldValue: oExpenseData.expected_co2_impact },
+                { fieldName: "Huidig Waterverbruik", fieldValue: oExpenseData.current_water_consumption },
+                { fieldName: "Verwacht Waterverbruik", fieldValue: oExpenseData.expected_water_consumption },
+                { fieldName: "Groene Terugverdientijd", fieldValue: oExpenseData.green_payback },
+                { fieldName: "Groene Energie Output", fieldValue: oExpenseData.green_energy_output },
+                { fieldName: "Opmerkingen", fieldValue: oExpenseData.description }
+            ];
+
+            const oOverviewModel = new sap.ui.model.json.JSONModel({ overview: aOverviewData });
+            this.getView().setModel(oOverviewModel, "overviewModel");
+        },
+
+        /**
          * Controleer de data in het Opmerkingen-tabblad.
          */
         onCheck: function () {
@@ -154,6 +191,7 @@ sap.ui.define([
                 MessageBox.error(validation.message);
                 return;
             }
+            this.onPrepareOverview(); // Overzichtsdata voorbereiden
             MessageBox.success("Alle gegevens zijn correct ingevuld.");
             this.getView().byId("_IDGenIconTabBar").setSelectedKey("overview");
         },

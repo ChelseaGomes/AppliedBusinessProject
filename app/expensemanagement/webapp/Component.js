@@ -6,7 +6,9 @@ sap.ui.define(
         return Component.extend("expensemanagement.Component", {
             metadata: {
                 manifest: "json"
-            }
+            },
+
+            
         });
     }
 );
