@@ -1,92 +1,42 @@
-sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-    "sap/m/MessageBox"
-], function (Controller, MessageBox) {
+sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Controller, MessageBox) {
     "use strict";
 
     return Controller.extend("masterdatamanagement.controller.View1", {
-        onNavTerug: function () {
-            const oHistory = sap.ui.core.routing.History.getInstance();
-            const sPreviousHash = oHistory.getPreviousHash();
+        onInit: function () {
+            // Backend OData-model instellen
+            const oModel = new sap.ui.model.odata.v2.ODataModel("/ExpenseService/");
+            this.getView().setModel(oModel);
 
-            if (sPreviousHash !== undefined) {
-                window.history.go(-1);
-            } else {
-                MessageBox.show("Geen vorige pagina gevonden.");
-            }
+            // JSON-models voor Categories en FinancingType
+            this.getView().setModel(new sap.ui.model.json.JSONModel([]), "categoriesModel");
+            this.getView().setModel(new sap.ui.model.json.JSONModel([]), "financingTypesModel");
+
+            // Gegevens ophalen
+            this._loadData();
         },
 
-        onCategorieBewerken: function (oEvent) {
-            const oContext = oEvent.getSource().getBindingContext();
-            const oView = this.getView();
-
-            if (!this._oBewerkenDialoog) {
-                this._oBewerkenDialoog = oView.byId("bewerkenDialoog");
-            }
-
-            this._oBewerkenDialoog.setBindingContext(oContext);
-            this._oBewerkenDialoog.open();
-        },
-
-        onOpslaanBewerken: function () {
-            const oDialoog = this._oBewerkenDialoog;
-            const oContext = oDialoog.getBindingContext();
+        _loadData: function () {
             const oModel = this.getView().getModel();
 
-            oModel.updateBindings(true); // Model updaten
-            oDialoog.close();
-        },
-
-        onSluitBewerken: function () {
-            this._oBewerkenDialoog.close();
-        },
-
-        onCategorieVerwijderen: function (oEvent) {
-            const oContext = oEvent.getSource().getBindingContext();
-            const oModel = this.getView().getModel();
-
-            MessageBox.confirm("Weet u zeker dat u dit item wilt verwijderen?", {
-                actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-                onClose: function (sAction) {
-                    if (sAction === MessageBox.Action.YES) {
-                        const sPath = oContext.getPath();
-                        const aData = oModel.getProperty(sPath.split("/")[1]);
-
-                        aData.splice(parseInt(sPath.split("/")[2]), 1);
-                        oModel.setProperty("/" + sPath.split("/")[1], aData);
-                    }
+            // Categories ophalen
+            oModel.read("/Categories", {
+                success: (oData) => {
+                    this.getView().getModel("categoriesModel").setData(oData.results);
+                },
+                error: (oError) => {
+                    MessageBox.error("Fout bij het ophalen van categorieën: " + oError.message);
                 }
             });
-        },
 
-        onCategorieToevoegen: function () {
-            if (!this._oToevoegenDialoog) {
-                this._oToevoegenDialoog = this.getView().byId("toevoegenDialoog");
-            }
-            this._oToevoegenDialoog.open();
-        },
-
-        onToevoegenBevestigen: function () {
-            const oModel = this.getView().getModel();
-            const sPath = this.getView().byId("hoofdTabBar").getSelectedKey();
-            const aData = oModel.getProperty("/" + sPath);
-
-            const sNaam = this.byId("toevoegenNaam").getValue();
-            const sBeschrijving = this.byId("toevoegenBeschrijving").getValue();
-            const sStatus = this.byId("toevoegenStatus").getSelectedKey();
-
-            aData.push({
-                Name: sNaam,
-                Description: sBeschrijving,
-                State: sStatus
+            // FinancingTypes ophalen
+            oModel.read("/FinancingType", {
+                success: (oData) => {
+                    this.getView().getModel("financingTypesModel").setData(oData.results);
+                },
+                error: (oError) => {
+                    MessageBox.error("Fout bij het ophalen van financieringstypen: " + oError.message);
+                }
             });
-
-            oModel.setProperty("/" + sPath, aData);
-            this._oToevoegenDialoog.close();
-        },
-
-        onSluitToevoegen: function () {
-            this._oToevoegenDialoog.close();
         }
     });
 });

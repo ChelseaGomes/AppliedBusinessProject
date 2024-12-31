@@ -36,13 +36,13 @@
                                     icon="sap-icon://add"
                                     tooltip="Categorie toevoegen"
                                     type="Emphasized"
-                                    press="onCategorieToevoegen"
+                                    press="onAddCategory"
                                 />
                             </Toolbar>
                             <Table
                                 id="categorieTable"
                                 inset="false"
-                                items="{/Categories}"
+                                items="{categoriesModel>/}"
                                 class="sapUiResponsiveTable"
                                 width="auto"
                             >
@@ -63,24 +63,24 @@
                                 <items>
                                     <ColumnListItem>
                                         <cells>
-                                            <Text text="{Name}" />
-                                            <Text text="{Description}" />
+                                            <Text text="{categoriesModel>name}" />
+                                            <Text text="{categoriesModel>description}" />
                                             <ObjectStatus
-                                                text="{State}"
-                                                state="{= ${State} === 'ACT' ? 'Success' : 'Error'}"
+                                                text="{categoriesModel>state}"
+                                                state="{= ${categoriesModel>state} === 'ACT' ? 'Success' : 'Error'}"
                                             />
                                             <HBox>
                                                 <Button
                                                     icon="sap-icon://edit"
                                                     tooltip="Bewerken"
                                                     type="Transparent"
-                                                    press="onCategorieBewerken"
+                                                    press="onEditCategory"
                                                 />
                                                 <Button
                                                     icon="sap-icon://delete"
                                                     tooltip="Verwijderen"
                                                     type="Transparent"
-                                                    press="onCategorieVerwijderen"
+                                                    press="onDeleteCategory"
                                                 />
                                             </HBox>
                                         </cells>
@@ -108,13 +108,13 @@
                                     icon="sap-icon://add"
                                     tooltip="Financieringstype toevoegen"
                                     type="Emphasized"
-                                    press="onCategorieToevoegen"
+                                    press="onAddFinancingType"
                                 />
                             </Toolbar>
                             <Table
                                 id="financieringTable"
                                 inset="false"
-                                items="{/FinancingTypes}"
+                                items="{financingTypesModel>/}"
                                 class="sapUiResponsiveTable"
                                 width="auto"
                             >
@@ -135,24 +135,24 @@
                                 <items>
                                     <ColumnListItem>
                                         <cells>
-                                            <Text text="{Name}" />
-                                            <Text text="{Description}" />
+                                            <Text text="{financingTypesModel>name}" />
+                                            <Text text="{financingTypesModel>description}" />
                                             <ObjectStatus
-                                                text="{State}"
-                                                state="{= ${State} === 'ACT' ? 'Success' : 'Error'}"
+                                                text="{financingTypesModel>state}"
+                                                state="{= ${financingTypesModel>state} === 'ACT' ? 'Success' : 'Error'}"
                                             />
                                             <HBox>
                                                 <Button
                                                     icon="sap-icon://edit"
                                                     tooltip="Bewerken"
                                                     type="Transparent"
-                                                    press="onCategorieBewerken"
+                                                    press="onEditFinancingType"
                                                 />
                                                 <Button
                                                     icon="sap-icon://delete"
                                                     tooltip="Verwijderen"
                                                     type="Transparent"
-                                                    press="onCategorieVerwijderen"
+                                                    press="onDeleteFinancingType"
                                                 />
                                             </HBox>
                                         </cells>
@@ -170,7 +170,6 @@
                 class="image-container"
                 justifyContent="Center"
                 alignItems="Center"
-                
             >
                 <Image
                     src="images/shore-logo.png"

@@ -1,21 +1,24 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form">
-    <core:Title id="_IDGenTitle4" text="Expense: Financieel en operationeel" />
-    <Label id="_IDGenLabel6" text="Groene energie opbrengst (in %)" />
-    <Input id="_IDGenInput3" value="{expenseModel>/green_energy_output}" required="false" type="Number" />
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <core:Title text="Expense: Operationeel" />
+    
+    <Label text="Groene energie opbrengst (in %)" />
+    <Input id="green_energy_output" value="{expenseModel>/green_energy_output}" type="Number" />
 
-    <Label id="_IDGenLabel7" text="Huidige CO2 impact (in kg/ton)" />
-    <Input id="_IDGenInput4" value="{expenseModel>/current_co2_impact}" required="false" type="Number" />
+    <Label text="Huidige CO2 impact (in kg/ton)" />
+    <Input id="current_co2_impact" value="{expenseModel>/current_co2_impact}" type="Number" />
 
-    <Label id="_IDGenLabel8" text="CO2 impact na realisatie v/h project (in kg/ton)" />
-    <Input id="_IDGenInput5" value="{expenseModel>/expected_co2_impact}" required="false" type="Number" />
+    <Label text="CO2 impact na realisatie v/h project (in kg/ton)" />
+    <Input id="expected_co2_impact" value="{expenseModel>/expected_co2_impact}" type="Number" />
 
-    <Label id="_IDGenLabel9" text="Huidige waterconsumptie (in m3/tn)" />
-    <Input id="_IDGenInput6" value="{expenseModel>/current_water_consumption}" required="false" type="Number" />
+    <Label text="Huidige waterconsumptie (in m3/tn)" />
+    <Input id="current_water_consumption" value="{expenseModel>/current_water_consumption}" type="Number" />
 
-    <Label id="_IDGenLabel10" text="Waterconsumptie impact na project (in m3/tn)" />
-    <Input id="_IDGenInput7" value="{expenseModel>/expected_water_consumption}" required="false" type="Number" />
+    <Label text="Waterconsumptie impact na project (in m3/tn)" />
+    <Input id="expected_water_consumption" value="{expenseModel>/expected_water_consumption}" type="Number" />
 
-    <Label id="_IDGenLabel11" text="Green payback (in maanden)" />
-    <Input id="_IDGenInput8" value="{expenseModel>/green_payback}" required="false" type="Number" />
+    <Label text="Green payback (in maanden)" />
+    <Input id="green_payback" value="{expenseModel>/green_payback}" type="Number" />
 
+    <Label text="Opmerking" />
+    <TextArea id="obeservation" value="{expenseModel>/obeservation}" rows="5" />
 </core:FragmentDefinition>

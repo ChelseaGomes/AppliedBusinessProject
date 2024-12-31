@@ -1,230 +1,119 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/m/MessageBox",
-    "sap/ui/model/json/JSONModel"
-], function (Controller, MessageBox, JSONModel) {
+    "sap/m/MessageBox"
+], function (Controller, MessageBox) {
     "use strict";
 
     return Controller.extend("expensecreation.controller.Expense", {
-
-        /**
-         * Functie voor initiële setup.
-         */
+        // onInit wordt 1 keer aangeroepen bij het laden van de view
         onInit: function () {
-
-            // Laad mockdata voor Financing Types
-            let oFinancingTypesModel = new sap.ui.model.json.JSONModel();
-            oFinancingTypesModel.loadData("model/FinancingTypes.json");
-            this.getView().setModel(oFinancingTypesModel, "financingTypesModel");
-
-            // Laad mockdata voor Categories
-            let oCategoriesModel = new sap.ui.model.json.JSONModel();
-            oCategoriesModel.loadData("model/Categories.json");
-            this.getView().setModel(oCategoriesModel, "categoriesModel");
-
-            // JSON-model voor expense data
-            let oExpenseModel = new JSONModel({
-                project_name: "",
-                project_leader: "",
-                start_date: this._getDefaultStartDate(),
-                category: "",
-                financing_type: "",
-                execution_months: "",
-                expense_amount: "",
-                current_co2_impact: "",
-                expected_co2_impact: "",
-                current_water_consumption: "",
-                expected_water_consumption: "",
-                green_payback: "",
-                green_energy_output: "",
-                description: "",
-                submittedBy: "Gebruiker", // Dummy data, kan worden aangepast
-                submittedOn: new Date().toISOString(),
-                status: "submitted"
+            // JSON-model maken voor een nieuwe expense
+            let oExpenseModel = new sap.ui.model.json.JSONModel({
+                project_name: null,
+                project_leader: null,
+                start_date: null,
+                category: null,
+                financing_type: null,
+                execution_months: null,
+                expense_amount: null,
+                green_energy_output: null,
+                current_co2_impact: null,
+                expected_co2_impact: null,
+                current_water_consumption: null,
+                expected_water_consumption: null,
+                green_payback: null,
+                obeservation: null
             });
 
-            // Set het model in de view
+            let oOverviewModel = new sap.ui.model.json.JSONModel();
+
+            // Model binden aan de view
             this.getView().setModel(oExpenseModel, "expenseModel");
-        },
-
-        /**
-         * Bereken standaard startdatum: huidige dag + 1 maand.
-         */
-        _getDefaultStartDate: function () {
-            let oDate = new Date();
-            oDate.setMonth(oDate.getMonth() + 1);
-            return oDate.toISOString().split("T")[0];
-        },
-
-        /**
-         * Valideer de expense voordat deze wordt ingediend.
-         */
-        _validateExpenseData: function () {
-            const oData = this.getView().getModel("expenseModel").getData();
-            const today = new Date();
-            const expenseDate = new Date(oData.start_date);
-
-            // Controleer verplichte velden
-            const mandatoryFields = [
-                "project_name",
-                "project_leader",
-                "start_date",
-                "category",
-                "financing_type",
-                "execution_months",
-                "expense_amount"
-            ];
-            const missingFields = mandatoryFields.filter(field => !oData[field]);
-
-            if (missingFields.length > 0) {
-                return {
-                    valid: false,
-                    message: "Vul alle verplichte velden in."
-                };
-            }
-
-            // Controleer startdatum (niet eerder dan 2 weken vanaf vandaag)
-            if (expenseDate < today.setDate(today.getDate() + 14)) {
-                return {
-                    valid: false,
-                    message: "De startdatum moet minstens 2 weken in de toekomst liggen."
-                };
-            }
-
-            // Controleer bedragen voor CapEx en OpEx
-            if (oData.financing_type === "CapEx" && oData.expense_amount < 10000) {
-                return {
-                    valid: false,
-                    message: "Een CapEx-aanvraag moet minstens €10.000 bedragen."
-                };
-            }
-            if (oData.financing_type === "OpEx" && oData.expense_amount > 50000) {
-                return {
-                    valid: false,
-                    message: "Een OpEx-aanvraag mag niet meer dan €50.000 bedragen."
-                };
-            }
-
-            // Controleer totaalbedrag (maximaal €150.000)
-            if (oData.expense_amount > 150000) {
-                return {
-                    valid: false,
-                    message: "Het totaalbedrag mag niet meer dan €150.000 bedragen."
-                };
-            }
-
-            // Controleer aantal maanden (1 <= maanden <= 96)
-            if (oData.execution_months < 1 || oData.execution_months > 96) {
-                return {
-                    valid: false,
-                    message: "Het aantal maanden moet tussen 1 en 96 liggen."
-                };
-            }
-
-            return { valid: true };
-        },
-
-        /**
-         * Functie om naar het volgende tabblad te navigeren.
-         */
-        onNextTab: function () {
-            const oIconTabBar = this.getView().byId("_IDGenIconTabBar");
-            const sSelectedKey = oIconTabBar.getSelectedKey();
-            const aItems = oIconTabBar.getItems();
-
-            for (let i = 0; i < aItems.length; i++) {
-                if (aItems[i].getKey() === sSelectedKey && i + 1 < aItems.length) {
-                    oIconTabBar.setSelectedKey(aItems[i + 1].getKey());
-                    break;
-                }
-            }
-        },
-
-        /**
-         * Functie om naar het vorige tabblad te navigeren.
-         */
-        onPreviousTab: function () {
-            const oIconTabBar = this.getView().byId("_IDGenIconTabBar");
-            const sSelectedKey = oIconTabBar.getSelectedKey();
-            const aItems = oIconTabBar.getItems();
-
-            for (let i = 0; i < aItems.length; i++) {
-                if (aItems[i].getKey() === sSelectedKey && i - 1 >= 0) {
-                    oIconTabBar.setSelectedKey(aItems[i - 1].getKey());
-                    break;
-                }
-            }
-        },
-
-        /**
-         * Functie om overzichtsgegevens voor te bereiden.
-         */
-        onPrepareOverview: function () {
-            const oExpenseData = this.getView().getModel("expenseModel").getData();
-            const aOverviewData = [
-                { fieldName: "Projectnaam", fieldValue: oExpenseData.project_name },
-                { fieldName: "Projectleider", fieldValue: oExpenseData.project_leader },
-                { fieldName: "Startdatum", fieldValue: oExpenseData.start_date },
-                { fieldName: "Categorie", fieldValue: oExpenseData.category },
-                { fieldName: "Financieringstype", fieldValue: oExpenseData.financing_type },
-                { fieldName: "Uitvoeringsmaanden", fieldValue: oExpenseData.execution_months },
-                { fieldName: "Bedrag", fieldValue: oExpenseData.expense_amount },
-                { fieldName: "CO2 Impact Huidig", fieldValue: oExpenseData.current_co2_impact },
-                { fieldName: "CO2 Impact Verwacht", fieldValue: oExpenseData.expected_co2_impact },
-                { fieldName: "Huidig Waterverbruik", fieldValue: oExpenseData.current_water_consumption },
-                { fieldName: "Verwacht Waterverbruik", fieldValue: oExpenseData.expected_water_consumption },
-                { fieldName: "Groene Terugverdientijd", fieldValue: oExpenseData.green_payback },
-                { fieldName: "Groene Energie Output", fieldValue: oExpenseData.green_energy_output },
-                { fieldName: "Opmerkingen", fieldValue: oExpenseData.description }
-            ];
-
-            const oOverviewModel = new sap.ui.model.json.JSONModel({ overview: aOverviewData });
             this.getView().setModel(oOverviewModel, "overviewModel");
         },
 
-        /**
-         * Controleer de data in het Opmerkingen-tabblad.
-         */
-        onCheck: function () {
-            const validation = this._validateExpenseData();
-            if (!validation.valid) {
-                MessageBox.error(validation.message);
-                return;
-            }
-            this.onPrepareOverview(); // Overzichtsdata voorbereiden
-            MessageBox.success("Alle gegevens zijn correct ingevuld.");
-            this.getView().byId("_IDGenIconTabBar").setSelectedKey("overview");
+        onExpenseCreation: function () {
+            // Default OData-model ophalen
+            var oModel = this.getOwnerComponent().getModel();
+
+            // List binding maken voor de Expenses entiteit
+            var oListBinding = oModel.bindList("/Expenses", undefined, undefined, undefined, { $$updateGroupId: "createExpense" });
+
+            // Data ophalen uit het expenseModel
+            var oExpenseData = this.getView().getModel("expenseModel").getData();
+
+            // Context aanmaken met de expense-data
+            var oContext = oListBinding.create(oExpenseData);
+
+            // Batch submitten voor de aanmaak van de expense
+            this.getOwnerComponent().getModel().submitBatch("createExpense")
+                .then(function () {
+                    // Expense is succesvol aangemaakt
+                    MessageBox.alert("Expense succesvol opgeslagen", {
+                        icon: sap.m.MessageBox.Icon.SUCCESS,
+                        title: "Success"
+                    });
+                }, function (oError) {
+                    // Foutmelding tonen als er iets misgaat
+                    MessageBox.alert(oError.message, {
+                        icon: sap.m.MessageBox.Icon.ERROR,
+                        title: "Fout bij het opslaan"
+                    });
+                });
         },
 
-        /**
-         * Verstuur de expense naar de backend.
-         */
-        onComplete: function () {
-            const oModel = this.getOwnerComponent().getModel();
-            const oExpenseData = this.getView().getModel("expenseModel").getData();
+        onNextTab: function () {
+            // IconTabBar ophalen
+            let oIconTabBar = this.getView().byId("iconTabBarId");
+            oIconTabBar.setSelectedKey("overview");
 
-            MessageBox.confirm("Wilt u de expense indienen?", {
-                actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
-                onClose: (sAction) => {
-                    if (sAction === MessageBox.Action.OK) {
-                        oModel.create("/Expenses", oExpenseData, {
-                            success: function () {
-                                MessageBox.success("De expense is succesvol ingediend.");
-                            },
-                            error: function (oError) {
-                                MessageBox.error("Er is een fout opgetreden: " + oError.message);
-                            }
-                        });
-                    }
-                }
+            // Expense data ophalen
+            let oExpenseData = this.getView().getModel("expenseModel").getData();
+
+            // Mapping van technische veldnamen naar labels
+            const fieldLabelMapping = {
+                project_name: "Projectnaam",
+                project_leader: "Projectleider",
+                start_date: "Startdatum",
+                category: "Categorie",
+                financing_type: "Financieringstype",
+                execution_months: "Aantal maanden van uitvoering",
+                expense_amount: "Bedrag van de expense (€)",
+                green_energy_output: "Groene energie opbrengst (in %)",
+                current_co2_impact: "Huidige CO2 impact (in kg/ton)",
+                expected_co2_impact: "CO2 impact na realisatie v/h project (in kg/ton)",
+                current_water_consumption: "Huidige waterconsumptie (in m3/tn)",
+                expected_water_consumption: "Waterconsumptie impact na project (in m3/tn)",
+                green_payback: "Green payback (in maanden)",
+                obeservation: "Opmerking"
+            };
+
+            // Overzicht model bijwerken
+            let oOverviewModel = this.getView().getModel("overviewModel");
+            let overviewData = Object.keys(oExpenseData).map(key => {
+                return {
+                    fieldName: fieldLabelMapping[key] || key, // Gebruik het label uit de mapping of de key als fallback
+                    fieldValue: oExpenseData[key] || "Geen gegevens"
+                };
             });
+            oOverviewModel.setData(overviewData);
         },
 
-        /**
-         * Navigeer terug.
-         */
+        onPreviousTab: function () {
+            // IconTabBar ophalen
+            let oIconTabBar = this.getView().byId("iconTabBarId");
+            oIconTabBar.setSelectedKey("generalInfo");
+        },
+
         onNavBack: function () {
-            window.history.back();
+            // Navigeer terug naar de vorige pagina
+            window.history.go(-1);
+        },
+
+        onComplete: function () {
+            MessageBox.success("Het proces is voltooid.", {
+                title: "Voltooid"
+            });
         }
     });
 });

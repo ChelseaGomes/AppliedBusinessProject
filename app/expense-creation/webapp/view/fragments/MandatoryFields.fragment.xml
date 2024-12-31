@@ -3,81 +3,30 @@
     xmlns:core="sap.ui.core"
     xmlns:f="sap.ui.layout.form"
 >
-    <core:Title
-        id="_IDGenTitle3"
-        text="Expense: Algemene Informatie"
-    />
-    <Label
-        id="_IDGenLabel"
-        text="Projectnaam"
-    />
-    <Input
-        id="_IDGenInput"
-        value="{expenseModel>/project_name}"
-        required="true"
-    />
+    <core:Title text="Expense: Algemene Informatie" />
+    
+    <Label text="Projectnaam" />
+    <Input id="project_name" value="{expenseModel>/project_name}" required="true" />
 
-    <Label
-        id="_IDGenLabel1"
-        text="Projectleider"
-    />
-    <Input
-        id="_IDGenInput1"
-        value="{expenseModel>/project_leader}"
-        required="true"
-    />
+    <Label text="Projectleider" />
+    <Input id="project_leader" value="{expenseModel>/project_leader}" required="true" />
 
-    <Label
-        id="_IDGenLabel2"
-        text="Startdatum"
-    />
-    <DatePicker
-        id="_IDGenDatePicker"
-        value="{expenseModel>/start_date}"
-        required="true"
-    />
+    <Label text="Startdatum" />
+    <DatePicker id="start_date" value="{expenseModel>/start_date}" required="true" />
 
     <Label text="Categorie" />
-    <Select
-        items="{categoriesModel>/Categories}"
-        selectedKey="{expenseModel>/category}"
-    >
-        <core:Item
-            key="{categoriesModel>name}"
-            text="{categoriesModel>name}"
-        />
+    <Select id="category" selectedKey="{expenseModel>/category}" items="{/Categories}" required="true">
+        <core:Item key="{ID}" text="{name}" />
     </Select>
 
-    <Label text="Financieringstype" />
-    <Select
-        items="{financingTypesModel>/FinancingTypes}"
-        selectedKey="{expenseModel>/financing_type}"
-    >
-        <core:Item
-            key="{financingTypesModel>name}"
-            text="{financingTypesModel>name}"
-        />
+    <Label id="financing_type" text="Financieringstype" />
+    <Select selectedKey="{expenseModel>/financing_type}" items="{/FinancingType}" required="true">
+        <core:Item key="{ID}" text="{name}" />
     </Select>
 
-    <Label
-        id="_IDGenLabel5"
-        text="Aantal maanden van uitvoering"
-    />
-    <Input
-        id="_IDGenInput2"
-        value="{expenseModel>/execution_months}"
-        required="true"
-        type="Number"
-    />
+    <Label text="Aantal maanden van uitvoering" />
+    <Input id="execution_months" value="{expenseModel>/execution_months}" type="Number" required="true" />
 
-    <Label
-        id="_IDGenLabel21"
-        text="Bedrag van de expense (€)"
-    />
-    <Input
-        id="_IDGenInput9"
-        value="{expenseModel>/expense_amount}"
-        type="Number"
-        required="true"
-    />
+    <Label text="Bedrag van de expense (€)" />
+    <Input id="expense_amount" value="{expenseModel>/expense_amount}" type="Number" required="true" />
 </core:FragmentDefinition>
