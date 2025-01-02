@@ -125,10 +125,18 @@
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
-                    "type": "ResponsiveTable"
+                    "type": "AnalyticalTable",
+                    "personalization": {
+                      "filter": true
+                    },
+                    "quickVariantSelection": {
+                      "hideTableTitle": false
+                    },
+                    "enableExport": true
                   }
                 }
-              }
+              },
+              "initialLoad": "Enabled"
             }
           }
         },

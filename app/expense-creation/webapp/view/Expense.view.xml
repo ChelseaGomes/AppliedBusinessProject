@@ -6,8 +6,25 @@
     controllerName="expensecreation.controller.Expense" 
     displayBlock="true">
 
-    <Page class="expensecreation custom-page" showNavButton="true" navButtonPress="onNavBack"  title="SHORE - Expense Creation App">
-    
+    <Page class="expensecreation custom-page" showNavButton="true" navButtonPress="onNavBack">
+        
+        <!-- Custom Header -->
+        <customHeader>
+            <Bar>
+                <contentLeft>
+                    <!-- Terug icoon behouden -->
+                    <Button icon="sap-icon://nav-back" type="Transparent" press="onNavBack" />
+                </contentLeft>
+                <contentMiddle>
+                    <!-- Logo en Titel -->
+                    <HBox alignItems="Center">
+                        <Image src="images/shore-logo.png" width="90px" height="auto" alt="SHORE Logo" />
+                        <Title text="Expense Creation App" class="app-title" />
+                    </HBox>
+                </contentMiddle>
+            </Bar>
+        </customHeader>
+
         <!-- Tab Container for Sections -->
         <IconTabBar id="iconTabBarId" selectedKey="generalInfo" class="sapUiResponsiveMargin custom-icon-tabs">
             
@@ -92,11 +109,5 @@
                 </IconTabFilter>
             </items>
         </IconTabBar>
-
-        <!-- Image Section -->
-        <VBox class="image-container" justifyContent="Center" alignItems="Center">
-            <Image src="images/shore-logo.png" width="50%" height="auto" alt="Decorative Image" class="decorative-image" />
-        </VBox>
-       
     </Page>
 </mvc:View>

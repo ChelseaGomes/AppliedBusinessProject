@@ -1,4 +1,4 @@
-using { cuid, managed } from '@sap/cds/common';
+using { cuid, managed , sap.common.CodeList} from '@sap/cds/common';
 
 context ExpenseCreationApp {
 
@@ -13,7 +13,7 @@ context ExpenseCreationApp {
         amount            : Decimal(15,2) @assert.range: [0, 150000] @assert.notEmpty;
         environment       : Association to Environment;
         observation       : String(200);
-        status           : String(10);      
+        status           : Association to Status default 'pending';      
         submitted_by     : String(50);      
         submitted_on     : DateTime;              
         
@@ -41,4 +41,14 @@ context ExpenseCreationApp {
         green_payback           : Decimal(10,2); 
         green_energy_output     : Decimal(5,2);
     }
+
+    entity Status : CodeList {
+key code: String enum {
+    submitted = 'I';
+    approved = 'G'; 
+
+    
+};
+criticality : Integer;
+}
 }

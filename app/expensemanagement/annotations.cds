@@ -1,4 +1,6 @@
 using ExpenseService as service from '../../srv/services';
+using from '../../db/schema';
+
 annotate service.Expenses with @(
     UI.FieldGroup #GeneratedGroup : {
         $Type : 'UI.FieldGroupType',
@@ -41,6 +43,13 @@ annotate service.Expenses with @(
         },
         {
             $Type : 'UI.DataField',
+            Value : status_code,
+            Label : 'Status',
+            Criticality : status.criticality,
+            CriticalityRepresentation : #WithIcon,
+        },
+        {
+            $Type : 'UI.DataField',
             Label : '{i18n>Startdatum}',
             Value : start_date,
         },
@@ -51,13 +60,13 @@ annotate service.Expenses with @(
         },
         {
             $Type : 'UI.DataField',
-            Value : category.description,
+            Value : category.name,
             Label : '{i18n>Categorie}',
         },
         {
             $Type : 'UI.DataField',
-            Value : financing_type.financing_id,
-            Label : '{i18n>FinancingType}',
+            Value : financing_type.name,
+            Label : '{i18n>FinancingType1}',
         },
         {
             $Type : 'UI.DataField',
@@ -80,7 +89,32 @@ annotate service.Expenses with @(
         project_name,
         category.name,
         financing_type.name,
+        status.descr,
     ],
+    UI.SelectionPresentationVariant #table : {
+        $Type : 'UI.SelectionPresentationVariantType',
+        PresentationVariant : {
+            $Type : 'UI.PresentationVariantType',
+            Visualizations : [
+                '@UI.LineItem',
+            ],
+        },
+        SelectionVariant : {
+            $Type : 'UI.SelectionVariantType',
+            SelectOptions : [
+            ],
+        },
+    },
+    UI.PresentationVariant #vh_Expenses_start_date : {
+        $Type : 'UI.PresentationVariantType',
+        SortOrder : [
+            {
+                $Type : 'Common.SortOrderType',
+                Property : start_date,
+                Descending : true,
+            },
+        ],
+    },
 );
 
 annotate service.Expenses with {
@@ -128,18 +162,98 @@ annotate service.Expenses with {
 };
 
 annotate service.Expenses with {
-    start_date @Common.Label : '{i18n>Datum}'
+    start_date @(
+        Common.Label : '{i18n>Startdatum}',
+        )
 };
 
 annotate service.Expenses with {
-    project_name @Common.Label : '{i18n>ProjectNaam}'
+    project_name @(
+        Common.Label : '{i18n>ProjectNaam}',
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Expenses',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : project_name,
+                    ValueListProperty : 'project_name',
+                },
+            ],
+            Label : '{i18n>ProjectName}',
+        },
+        Common.ValueListWithFixedValues : false,
+    )
 };
 
 annotate service.Categories with {
-    name @Common.Label : '{i18n>Categorie}'
+    name @(
+        Common.Label : '{i18n>Categorie}',
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Categories',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : name,
+                    ValueListProperty : 'name',
+                },
+            ],
+            Label : '{i18n>Categorie}',
+        },
+        Common.ValueListWithFixedValues : true,
+        )
 };
 
 annotate service.FinancingType with {
-    name @Common.Label : '{i18n>FinancingType1}'
+    name @(
+        Common.Label : '{i18n>FinancingType1}',
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'FinancingType',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : name,
+                    ValueListProperty : 'description',
+                },
+            ],
+            Label : '{i18n>FinancingType2}',
+        },
+        Common.ValueListWithFixedValues : true,
+    )
+};
+
+annotate service.Expenses with {
+    status @(
+        UI.MultiLineText : true,
+        Common.Text : status.descr,
+    )
+};
+
+annotate service.Status with {
+    descr @(
+        Common.Label : '{i18n>Status}',
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Status',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : descr,
+                    ValueListProperty : 'descr',
+                },
+            ],
+            Label : '{i18n>Status}',
+        },
+        Common.ValueListWithFixedValues : true,
+    )
+};
+
+annotate service.Categories with {
+    description @Common.Text : {
+        $value : name,
+        ![@UI.TextArrangement] : #TextOnly,
+    }
 };
 

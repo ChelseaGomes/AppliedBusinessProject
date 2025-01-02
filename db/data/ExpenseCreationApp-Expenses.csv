@@ -1,1 +1,21 @@
-ID,project_name,project_leader,start_date,category_ID,financing_type_ID,execution_months,amount,environment_ID,observation,status,submitted_by,submitted_on,createdAt,createdBy,modifiedAt,modifiedBy
+ID,project_name,project_leader,start_date,category_ID,financing_type_ID,execution_months,amount,environment_ID,observation,status_code,submitted_on
+01,Solar Panel Installation,John Smith,2023-03-31,07,01,6,92162.86,01,Focus on reducing carbon emissions.,I,2024-06-01
+02,Wind Turbine Deployment,Emma Johnson,2023-10-12,01,01,28,240176.48,02,Improves operational efficiency significantly.,G,2023-06-09
+03,Eco-Friendly Office Renovation,Michael Brown,2023-09-28,01,03,20,291302.64,03,Expected to enhance employee satisfaction.,G,2023-03-22
+04,IT System Upgrade,Sophia Davis,2023-02-16,04,02,8,434892.97,04,Promotes renewable energy use.,I,2024-01-25
+05,Employee Wellness Program,James Wilson,2024-09-15,03,03,29,160164.92,05,Critical for achieving long-term sustainability goals.,G,2024-01-24
+06,Water Recycling Plant,Olivia Martinez,2023-08-23,01,02,18,170483.39,06,Reduces water consumption by over 30%.,I,2024-08-03
+07,Marketing Campaign Expansion,William Garcia,2023-05-23,04,03,23,292539.78,07,Aligns with the company's green initiatives.,G,2024-08-20
+08,Data Center Optimization,Isabella Anderson,2023-06-06,03,03,19,318384.06,08,Improves data security and reliability.,G,2024-01-26
+09,Safety Training Program,Benjamin Lee,2024-11-29,05,03,16,100198.48,09,Expected to increase productivity by 20%.,G,2023-06-11
+10,Green Roof Implementation,Mia Thomas,2023-04-19,05,03,22,324036.6,10,Supports the company's digital transformation strategy.,I,2024-01-18
+11,Energy Storage Facility,Lucas Harris,2023-01-20,02,02,34,493394.62,11,Ensures compliance with safety regulations.,G,2023-09-03
+12,Infrastructure Growth Initiative,Charlotte Clark,2023-05-09,03,03,21,476081.91,12,Reduces energy consumption across the facility.,I,2023-09-29
+13,Sustainability Awareness Drive,Henry Lewis,2024-12-31,05,02,27,342445.13,13,Vital for supporting infrastructure growth.,G,2024-06-13
+14,Fleet Electrification,Amelia Walker,2023-01-08,02,03,26,76493.2,14,Improves customer satisfaction and retention.,I,2023-02-02
+15,Cloud Migration Project,Ethan Hall,2024-08-13,08,01,31,262837.82,15,Helps streamline internal processes.,G,2023-07-14
+16,Smart Grid Implementation,Grace Allen,2023-03-04,07,03,16,410266.63,16,Strengthens IT infrastructure for scalability.,I,2023-09-12
+17,Digital Transformation Strategy,Alexander Young,2024-03-29,02,01,26,499677.11,17,Promotes sustainable transportation solutions.,I,2023-04-06
+18,Renewable Energy Investment,Ella King,2023-06-18,07,01,18,169341.38,18,Enhances public perception of the company.,G,2023-10-20
+19,Cybersecurity Enhancement,Daniel Wright,2023-10-31,04,01,24,381081.73,19,Essential for addressing cybersecurity risks.,I,2023-11-18
+20,Customer Experience Upgrade,Chloe Hill,2023-03-24,03,01,25,80582.39,20,Drives innovation in renewable energy.,I,2024-02-18
