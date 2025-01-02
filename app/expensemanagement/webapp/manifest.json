@@ -114,7 +114,7 @@
           "options": {
             "settings": {
               "contextPath": "/Expenses",
-              "variantManagement": "Page",
+              "variantManagement": "None",
               "navigation": {
                 "Expenses": {
                   "detail": {
@@ -136,7 +136,8 @@
                   }
                 }
               },
-              "initialLoad": "Enabled"
+              "initialLoad": "Enabled",
+              "defaultTemplateAnnotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#table"
             }
           }
         },
@@ -147,10 +148,22 @@
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/Expenses"
+              "contextPath": "/Expenses",
+              "content": {
+                "header": {
+                  "anchorBarVisible": true
+                }
+              },
+              "showRelatedApps": true,
+              "sectionLayout": "Page"
             }
           }
         }
+      }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {}
       }
     }
   },

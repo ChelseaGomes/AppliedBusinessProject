@@ -7,23 +7,47 @@ annotate service.Expenses with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'project_name',
+                Label : '{i18n>ProjectNaam}',
                 Value : project_name,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'project_leader',
-                Value : project_leader,
+                Value : environment.expense.status.descr,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'start_date',
+                Label : '{i18n>Startdatum}',
                 Value : start_date,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'execution_months',
-                Value : execution_months,
+                Label : '{i18n>Projectleider}',
+                Value : project_leader,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : environment.expense.category_ID,
+                Label : '{i18n>Categorie}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : environment.expense.financing_type_ID,
+                Label : 'Financing type',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : environment.green_energy_output,
+                Label : '{i18n>GroeneEnergieopbrengst1}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : environment.green_payback,
+                Label : '{i18n>GreenPayback1}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : environment.expense.observation,
+                Label : '{i18n>Opmerking}',
             },
         ],
     },
@@ -31,8 +55,20 @@ annotate service.Expenses with @(
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'GeneratedFacet1',
-            Label : 'General Information',
+            Label : '{i18n>AlgemeneInformatie}',
             Target : '@UI.FieldGroup#GeneratedGroup',
+        },
+        {
+            $Type : 'UI.CollectionFacet',
+            Label : '{i18n>ExtraInformatie}',
+            ID : 'i18nExtraInformatie',
+            Facets : [
+                {
+                    $Type : 'UI.ReferenceFacet',
+                    ID : 'Details',
+                    Target : '@UI.FieldGroup#Details',
+                },
+            ],
         },
     ],
     UI.LineItem : [
@@ -91,12 +127,63 @@ annotate service.Expenses with @(
         financing_type.name,
         status.descr,
     ],
+    UI.HeaderInfo : {
+        Title : {
+            $Type : 'UI.DataField',
+            Value : project_name,
+        },
+        TypeName : '{i18n>ExtraInfo}',
+        TypeNamePlural : '',
+        Description : {
+            $Type : 'UI.DataField',
+            Value : observation,
+        },
+        TypeImageUrl : 'sap-icon://expense-report',
+    },
+    UI.DeleteHidden : true,
+    UI.FieldGroup #Details : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : execution_months,
+                Label : '{i18n>AantalMaandenVanUitvoering}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : environment.current_co2_impact,
+                Label : '{i18n>HuidigeCo2ImpactIn}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : environment.expected_co2_impact,
+                Label : '{i18n>Co2ImpacctNaRealisatie}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : environment.current_water_consumption,
+                Label : '{i18n>HuidigeWaterconsumptieInM3ton}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : environment.expected_water_consumption,
+                Label : '{i18n>WaterconsumptieImpactNaRealisatie}',
+            },
+        ],
+    },
     UI.SelectionPresentationVariant #table : {
         $Type : 'UI.SelectionPresentationVariantType',
         PresentationVariant : {
             $Type : 'UI.PresentationVariantType',
             Visualizations : [
                 '@UI.LineItem',
+            ],
+            SortOrder : [
+                {
+                    $Type : 'Common.SortOrderType',
+                    Property : submitted_on,
+                    Descending : true,
+                },
             ],
         },
         SelectionVariant : {
@@ -105,60 +192,62 @@ annotate service.Expenses with @(
             ],
         },
     },
-    UI.PresentationVariant #vh_Expenses_start_date : {
-        $Type : 'UI.PresentationVariantType',
-        SortOrder : [
-            {
-                $Type : 'Common.SortOrderType',
-                Property : start_date,
-                Descending : true,
-            },
-        ],
-    },
 );
 
 annotate service.Expenses with {
-    category @Common.ValueList : {
-        $Type : 'Common.ValueListType',
-        CollectionPath : 'Categories',
-        Parameters : [
-            {
-                $Type : 'Common.ValueListParameterInOut',
-                LocalDataProperty : category_ID,
-                ValueListProperty : 'ID',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'name',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'description',
-            },
-        ],
-    }
+    category @(
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Categories',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : category_ID,
+                    ValueListProperty : 'ID',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'name',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'description',
+                },
+            ],
+        },
+        Common.Text : {
+            $value : category.name,
+            ![@UI.TextArrangement] : #TextOnly
+        },
+    )
 };
 
 annotate service.Expenses with {
-    financing_type @Common.ValueList : {
-        $Type : 'Common.ValueListType',
-        CollectionPath : 'FinancingType',
-        Parameters : [
-            {
-                $Type : 'Common.ValueListParameterInOut',
-                LocalDataProperty : financing_type_ID,
-                ValueListProperty : 'ID',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'name',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'description',
-            },
-        ],
-    }
+    financing_type @(
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'FinancingType',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : financing_type_ID,
+                    ValueListProperty : 'ID',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'name',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'description',
+                },
+            ],
+        },
+        Common.Text : {
+            $value : financing_type.name,
+            ![@UI.TextArrangement] : #TextOnly
+        },
+    )
 };
 
 annotate service.Expenses with {
@@ -248,12 +337,5 @@ annotate service.Status with {
         },
         Common.ValueListWithFixedValues : true,
     )
-};
-
-annotate service.Categories with {
-    description @Common.Text : {
-        $value : name,
-        ![@UI.TextArrangement] : #TextOnly,
-    }
 };
 
