@@ -29,18 +29,18 @@ modules:
       buildpack: nodejs_buildpack
   - name: appliedbusinessproject-app-deployer
     type: com.sap.application.content
-    path: gen
+    path: .
     requires:
       - name: appliedbusinessproject-html5-repo-host
         parameters:
           content-target: true
     build-parameters:
-      build-result: app/
+      build-result: resources/
       requires:
         - artifacts:
             - expense-creation.zip
           name: appliedbusinessprojectexpensecreation
-          target-path: app/
+          target-path: resources/
         - artifacts:
             - expensemanagement.zip
           name: appliedbusinessprojectexpensemanagement
@@ -111,6 +111,8 @@ modules:
       commands:
         - npm install
         - npm run build:cf
+        - npm ci
+        - npm run build
       supported-platforms:
         []
 resources:
@@ -174,3 +176,4 @@ build-parameters:
       commands:
         - npm ci
         - npx cds build --production
+        - mkdir -p resources

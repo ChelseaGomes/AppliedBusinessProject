@@ -6,11 +6,12 @@
 >
     <Page
         id="page"
-        title="Beheer Masterdata"
+        title="Master Data Management Applicatie"
         class="sapUiResponsiveContentPadding"
         showNavButton="true"
-        navButtonPress="onNavTerug"
+        navButtonPress="onNavBack"
     >
+    
         <content>
             <IconTabBar
                 id="hoofdTabBar"
@@ -42,7 +43,7 @@
                             <Table
                                 id="categorieTable"
                                 inset="false"
-                                items="{categoriesModel>/}"
+                                items="{/Categories}"
                                 class="sapUiResponsiveTable"
                                 width="auto"
                             >
@@ -63,8 +64,8 @@
                                 <items>
                                     <ColumnListItem>
                                         <cells>
-                                            <Text text="{categoriesModel>name}" />
-                                            <Text text="{categoriesModel>description}" />
+                                            <Text text="{name}" />
+                                            <Text text="{description}" />
                                             <ObjectStatus
                                                 text="{categoriesModel>state}"
                                                 state="{= ${categoriesModel>state} === 'ACT' ? 'Success' : 'Error'}"

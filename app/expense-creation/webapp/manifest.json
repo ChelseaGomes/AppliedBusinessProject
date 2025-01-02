@@ -17,7 +17,7 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/odata/v4/expense/",
+        "uri": "odata/v4/expense/",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -29,6 +29,14 @@
       "inbounds": {
         "expensemanagement-display": {
           "semanticObject": "expensemanagement",
+          "action": "display",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        },
+        "masterdatamanagement-display": {
+          "semanticObject": "masterdatamanagement",
           "action": "display",
           "signature": {
             "parameters": {},
@@ -73,7 +81,6 @@
         "settings": {
           "bundleName": "expensecreation.i18n.i18n"
         }
-        
       },
       "": {
         "dataSource": "mainService",

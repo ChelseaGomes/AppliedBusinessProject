@@ -304,7 +304,7 @@ annotate service.FinancingType with {
                 {
                     $Type : 'Common.ValueListParameterInOut',
                     LocalDataProperty : name,
-                    ValueListProperty : 'description',
+                    ValueListProperty : 'name',
                 },
             ],
             Label : '{i18n>FinancingType2}',

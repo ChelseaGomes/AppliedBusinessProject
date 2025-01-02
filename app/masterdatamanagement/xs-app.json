@@ -5,7 +5,7 @@
     {
       "source": "^/odata/(.*)$",
       "target": "/odata/$1",
-      "destination": "MySAPSystem",
+      "destination": "appliedbusinessproject-srv-api",
       "authenticationType": "xsuaa",
       "csrfProtection": false
     },
