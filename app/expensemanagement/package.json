@@ -23,8 +23,8 @@
   },
   "ui5": {
     "dependencies": [
-      "ui5-task-zipper",
-      "@sap/ui5-builder-webide-extension"
+      "@sap/ui5-builder-webide-extension",
+      "ui5-task-zipper"
     ]
   }
 }

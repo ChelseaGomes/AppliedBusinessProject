@@ -71,6 +71,9 @@
         "sap.ui.core": {}
       }
     },
+    "resourceRoots": {
+      "expensecreation": "./"
+    },
     "contentDensities": {
       "compact": true,
       "cozy": true

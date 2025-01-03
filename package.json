@@ -22,6 +22,7 @@
   },
   "scripts": {
     "start": "cds-serve",
+    "watch": "cds watch --open app/launchpage.html",
     "watch-expense-creation": "cds watch --open expense-creation/webapp/index.html?sap-ui-xx-viewCache=false",
     "watch-expensemanagement": "cds watch --open expensemanagement/webapp/index.html?sap-ui-xx-viewCache=false",
     "undeploy": "cf undeploy appliedbusinessproject --delete-services --delete-service-keys --delete-service-brokers",
