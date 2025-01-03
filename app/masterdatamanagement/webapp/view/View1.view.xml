@@ -8,8 +8,8 @@
         id="page"
         title="Master Data Management Applicatie"
         class="sapUiResponsiveContentPadding"
-        showNavButton="true"
-        navButtonPress="onNavBack"
+        
+        
     >
     
         <content>

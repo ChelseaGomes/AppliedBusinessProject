@@ -12,13 +12,12 @@
         <customHeader>
             <Bar>
                 <contentLeft>
-                    <!-- Terug icoon behouden -->
-                    <Button icon="sap-icon://nav-back" type="Transparent" press="onNavBack" />
+                    
                 </contentLeft>
                 <contentMiddle>
                     <!-- Logo en Titel -->
                     <HBox alignItems="Center">
-                        <Image src="images/shore-logo.png" width="90px" height="auto" alt="SHORE Logo" />
+                        <Image src="images/shore-logo.png" width="100px" height="auto" alt="SHORE Logo" />
                         <Title text="Expense Creation App" class="app-title" />
                     </HBox>
                 </contentMiddle>
