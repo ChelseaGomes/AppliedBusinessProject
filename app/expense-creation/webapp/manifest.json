@@ -17,7 +17,7 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "odata/v4/expense/",
+        "uri": "/odata/v4/expense/",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -71,9 +71,7 @@
         "sap.ui.core": {}
       }
     },
-    "resourceRoots": {
-      "expensecreation": "./"
-    },
+    
     "contentDensities": {
       "compact": true,
       "cozy": true
@@ -91,7 +89,8 @@
         "settings": {
           "operationMode": "Server",
           "autoExpandSelect": true,
-          "earlyRequests": true
+          "earlyRequests": true, 
+          "synchronizationMode": "None"
         }
       }
     },

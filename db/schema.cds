@@ -13,7 +13,7 @@ context ExpenseCreationApp {
         amount            : Decimal(15,2) @assert.range: [0, 150000] @assert.notEmpty;
         environment       : Association to Environment;
         observation       : String(200);
-        status           : Association to Status default 'pending';      
+        status           : Association to Status default 'I';      
         submitted_by     : String(50);      
         submitted_on     : DateTime;              
         
@@ -39,7 +39,7 @@ context ExpenseCreationApp {
         current_water_consumption : Decimal(10,2);
         expected_water_consumption : Decimal(10,2);
         green_payback           : Decimal(10,2); 
-        green_energy_output     : Decimal(5,2);
+        green_energy_output     : Decimal(10,2);
     }
 
     entity Status : CodeList {

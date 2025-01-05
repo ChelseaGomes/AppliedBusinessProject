@@ -2,23 +2,23 @@
     <core:Title text="Expense: Operationeel" />
     
     <Label text="Groene energie opbrengst (in %)" />
-    <Input id="green_energy_output" value="{expenseModel>/green_energy_output}" type="Number" />
+    <Input id="green_energy_output" value="{expenseModel>/environment/green_energy_output}" type="Number" />
 
     <Label text="Huidige CO2 impact (in kg/ton)" />
-    <Input id="current_co2_impact" value="{expenseModel>/current_co2_impact}" type="Number" />
+    <Input id="current_co2_impact" value="{expenseModel>/environment/current_co2_impact}" type="Number" />
 
     <Label text="CO2 impact na realisatie v/h project (in kg/ton)" />
-    <Input id="expected_co2_impact" value="{expenseModel>/expected_co2_impact}" type="Number" />
+    <Input id="expected_co2_impact" value="{expenseModel>/environment/expected_co2_impact}" type="Number" />
 
     <Label text="Huidige waterconsumptie (in m3/tn)" />
-    <Input id="current_water_consumption" value="{expenseModel>/current_water_consumption}" type="Number" />
+    <Input id="current_water_consumption" value="{expenseModel>/environment/current_water_consumption}" type="Number" />
 
     <Label text="Waterconsumptie impact na project (in m3/tn)" />
-    <Input id="expected_water_consumption" value="{expenseModel>/expected_water_consumption}" type="Number" />
+    <Input id="expected_water_consumption" value="{expenseModel>/environment/expected_water_consumption}" type="Number" />
 
     <Label text="Green payback (in maanden)" />
-    <Input id="green_payback" value="{expenseModel>/green_payback}" type="Number" />
+    <Input id="green_payback" value="{expenseModel>/environment/green_payback}" type="Number" />
 
     <Label text="Opmerking" />
-    <TextArea id="obeservation" value="{expenseModel>/obeservation}" rows="5" />
+    <TextArea id="observation" value="{expenseModel>/observation}" rows="5" />
 </core:FragmentDefinition>

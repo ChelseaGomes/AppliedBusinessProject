@@ -16,7 +16,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/m/MessageBox"], function (Cont
         _loadData: function () {
 
              // Categorieën laden
-             this._loadCSV("/home/user/projects/AppliedBusinessProject/db/data/ExpenseCreationApp-Categories.csv", "categoriesModel");
+             this._loadCSV("data/ExpenseCreationApp-Categories.csv", "categoriesModel");
 
              // Financieringstypen laden
              this._loadCSV("/home/user/projects/AppliedBusinessProject/db/data/ExpenseCreationApp-FinancingType.csv", "financingTypesModel");

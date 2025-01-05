@@ -15,12 +15,12 @@
     <DatePicker id="start_date" value="{expenseModel>/start_date}" required="true" />
 
     <Label text="Categorie" />
-    <Select id="category" selectedKey="{expenseModel>/category}" items="{/Categories}" required="true">
+    <Select id="category" selectedKey="{expenseModel>/category_ID}" items="{/Categories}" required="true">
         <core:Item key="{ID}" text="{name}" />
     </Select>
 
     <Label id="financing_type" text="Financieringstype" />
-    <Select selectedKey="{expenseModel>/financing_type}" items="{/FinancingType}" required="true">
+    <Select selectedKey="{expenseModel>/financing_type_ID}" items="{/FinancingType}" required="true">
         <core:Item key="{ID}" text="{name}" />
     </Select>
 

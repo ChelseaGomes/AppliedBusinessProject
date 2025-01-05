@@ -6,23 +6,8 @@
     controllerName="expensecreation.controller.Expense" 
     displayBlock="true">
 
-    <Page class="expensecreation custom-page" showNavButton="true" navButtonPress="onNavBack">
+    <Page class="page_expense" title="Expense Creation Application">
         
-        <!-- Custom Header -->
-        <customHeader>
-            <Bar>
-                <contentLeft>
-                    
-                </contentLeft>
-                <contentMiddle>
-                    <!-- Logo en Titel -->
-                    <HBox alignItems="Center">
-                        <Image src="images/shore-logo.png" width="100px" height="auto" alt="SHORE Logo" />
-                        <Title text="Expense Creation App" class="app-title" />
-                    </HBox>
-                </contentMiddle>
-            </Bar>
-        </customHeader>
 
         <!-- Tab Container for Sections -->
         <IconTabBar id="iconTabBarId" selectedKey="generalInfo" class="sapUiResponsiveMargin custom-icon-tabs">
@@ -86,6 +71,7 @@
                         <HBox justifyContent="SpaceBetween">
                             <Button text="Terug" type="Transparent" press="onPreviousTab" enabled="false" />
                             <Button text="Volgende" type="Emphasized" press="onNextTab" />
+                            <Button text="TEST" type="Emphasized" press="onExpenseCreation" />
                         </HBox>
                     </VBox>
                 </IconTabFilter>
@@ -102,11 +88,15 @@
                         <!-- Navigation Buttons -->
                         <HBox justifyContent="SpaceBetween">
                             <Button text="Terug" type="Transparent" press="onPreviousTab" />
-                            <Button text="Voltooien" type="Accept" press="onComplete" />
+                            <Button text="Voltooien" type="Accept" press="onExpenseCreation" />
                         </HBox>
                     </VBox>
                 </IconTabFilter>
             </items>
         </IconTabBar>
+        <!-- Image Section -->
+        <VBox class="image-container" justifyContent="Center" alignItems="Center">
+            <Image src="images/shore-logo.png" width="50%" height="auto" alt="Decorative Image" class="decorative-image" />
+        </VBox>
     </Page>
 </mvc:View>

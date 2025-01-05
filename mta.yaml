@@ -1,7 +1,7 @@
 _schema-version: 3.3.0
-ID: applied-business-project
+ID: appliedbusinessproject
 version: 1.0.0
-description: "A comprehensive CAP-based business project."
+description: "A simple CAP project."
 parameters:
   enable-parallel-deployments: true
   deploy_mode: html5-repo
@@ -14,8 +14,7 @@ build-parameters:
         - mkdir -p resources
 
 modules:
-  # Backend Service
-  - name: applied-business-project-srv
+  - name: appliedbusinessproject-srv
     type: nodejs
     path: gen/srv
     parameters:
@@ -29,45 +28,42 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      - name: applied-business-project-db
-      - name: applied-business-project-auth
-      - name: applied-business-project-destination
+      - name: appliedbusinessproject-db
+      - name: appliedbusinessproject-auth
+      - name: appliedbusinessproject-destination
 
-  # Database Deployer
-  - name: applied-business-project-db-deployer
+  - name: appliedbusinessproject-db-deployer
     type: hdb
     path: gen/db
     parameters:
       buildpack: nodejs_buildpack
     requires:
-      - name: applied-business-project-db
+      - name: appliedbusinessproject-db
 
-  # HTML5 Application Deployer
-  - name: applied-business-project-app-deployer
+  - name: appliedbusinessproject-app-deployer
     type: com.sap.application.content
     path: .
     requires:
-      - name: applied-business-project-html5-repo-host
+      - name: appliedbusinessproject-html5-repo-host
         parameters:
           content-target: true
     build-parameters:
       build-result: resources/
       requires:
-        - name: applied-business-project-expensecreation
+        - name: appliedbusinessprojectexpensecreation
           artifacts:
             - expense-creation.zip
           target-path: resources/
-        - name: applied-business-project-expensemanagement
+        - name: appliedbusinessprojectexpensemanagement
           artifacts:
             - expensemanagement.zip
           target-path: resources/
-        - name: applied-business-project-masterdatamanagement
+        - name: appliedbusinessprojectmasterdatamanagement
           artifacts:
             - masterdatamanagement.zip
           target-path: resources/
 
-  # Expense Creation HTML5 App
-  - name: applied-business-project-expensecreation
+  - name: appliedbusinessprojectexpensecreation
     type: html5
     path: app/expense-creation
     build-parameters:
@@ -79,8 +75,7 @@ modules:
       supported-platforms:
         []
 
-  # Expense Management HTML5 App
-  - name: applied-business-project-expensemanagement
+  - name: appliedbusinessprojectexpensemanagement
     type: html5
     path: app/expensemanagement
     build-parameters:
@@ -92,8 +87,7 @@ modules:
       supported-platforms:
         []
 
-  # Master Data Management HTML5 App
-  - name: applied-business-project-masterdatamanagement
+  - name: appliedbusinessprojectmasterdatamanagement
     type: html5
     path: app/masterdatamanagement
     build-parameters:
@@ -105,34 +99,62 @@ modules:
       supported-platforms:
         []
 
+  - name: appliedbusinessproject-destinations
+    type: com.sap.application.content
+    requires:
+      - name: appliedbusinessproject-auth
+        parameters:
+          service-key:
+            name: appliedbusinessproject-auth-key
+      - name: appliedbusinessproject-html5-repo-host
+        parameters:
+          service-key:
+            name: appliedbusinessproject-html5-repo-host-key
+      - name: srv-api
+      - name: appliedbusinessproject-destination
+        parameters:
+          content-target: true
+    build-parameters:
+      no-source: true
+    parameters:
+      content:
+        instance:
+          existing_destinations_policy: update
+          destinations:
+            - Name: appliedbusinessproject-html5-repository
+              ServiceInstanceName: appliedbusinessproject-html5-repo-host
+              ServiceKeyName: appliedbusinessproject-html5-repo-host-key
+              sap.cloud.service: appliedbusinessproject.service
+            - Name: appliedbusinessproject-auth
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: appliedbusinessproject-auth
+              ServiceKeyName: appliedbusinessproject-auth-key
+              sap.cloud.service: appliedbusinessproject.service
+
 resources:
-  # HDI Container
-  - name: applied-business-project-db
+  - name: appliedbusinessproject-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
 
-  # HTML5 Apps Repository
-  - name: applied-business-project-html5-repo-host
+  - name: appliedbusinessproject-html5-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
       service-plan: app-host
 
-  # XSUAA Authentication Service
-  - name: applied-business-project-auth
+  - name: appliedbusinessproject-auth
     type: org.cloudfoundry.managed-service
     parameters:
       service: xsuaa
       service-plan: application
       path: ./xs-security.json
       config:
-        xsappname: applied-business-project-${org}-${space}
+        xsappname: appliedbusinessproject-${org}-${space}
         tenant-mode: dedicated
 
-  # Destination Service
-  - name: applied-business-project-destination
+  - name: appliedbusinessproject-destination
     type: org.cloudfoundry.managed-service
     parameters:
       service: destination
@@ -143,7 +165,7 @@ resources:
           instance:
             existing_destinations_policy: update
             destinations:
-              - Name: applied-business-project-srv-api
+              - Name: appliedbusinessproject-srv-api
                 URL: ~{srv-api/srv-url}
                 Authentication: NoAuthentication
                 Type: HTTP

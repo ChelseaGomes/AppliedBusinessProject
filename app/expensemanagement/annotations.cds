@@ -2,6 +2,7 @@ using ExpenseService as service from '../../srv/services';
 using from '../../db/schema';
 
 annotate service.Expenses with @(
+    
     UI.FieldGroup #GeneratedGroup : {
         $Type : 'UI.FieldGroupType',
         Data : [

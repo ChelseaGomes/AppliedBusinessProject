@@ -9,20 +9,27 @@ sap.ui.define([
         onInit: function () {
             // JSON-model maken voor een nieuwe expense
             let oExpenseModel = new sap.ui.model.json.JSONModel({
-                project_name: null,
-                project_leader: null,
+                project_name: "",
+                project_leader: "",
                 start_date: null,
-                category: null,
-                financing_type: null,
+                category_ID: "",
+                financing_type_ID: "",
                 execution_months: null,
-                expense_amount: null,
-                green_energy_output: null,
-                current_co2_impact: null,
-                expected_co2_impact: null,
-                current_water_consumption: null,
-                expected_water_consumption: null,
-                green_payback: null,
-                obeservation: null
+                amount: null,
+                environment: {
+                    current_co2_impact: null,
+                    expected_co2_impact: null,
+                    current_water_consumption: null,
+                    expected_water_consumption: null,
+                    green_payback: null,
+                    green_energy_output: null
+                },
+                observation: null, 
+                observation: "",
+        status_code: "I",
+        submitted_by: "",
+        submitted_on: null
+
             });
 
             let oOverviewModel = new sap.ui.model.json.JSONModel();
@@ -33,33 +40,31 @@ sap.ui.define([
         },
 
         onExpenseCreation: function () {
-            // Default OData-model ophalen
-            var oModel = this.getOwnerComponent().getModel();
+            // Haal het OData V4-model op van de OwnerComponent
+            var oModel = this.getOwnerComponent().getModel(); // OData V4 model
+            
 
-            // List binding maken voor de Expenses entiteit
             var oListBinding = oModel.bindList("/Expenses", undefined, undefined, undefined, { $$updateGroupId: "createExpense" });
-
-            // Data ophalen uit het expenseModel
-            var oExpenseData = this.getView().getModel("expenseModel").getData();
-
-            // Context aanmaken met de expense-data
-            var oContext = oListBinding.create(oExpenseData);
-
-            // Batch submitten voor de aanmaak van de expense
+            // oData v4 werkt aan de hand van contexts, we gaan deze uit de reeds gemaakte list binding halen 
+            
+            var oContext = oListBinding
+                .create(this.getView().getModel("expenseModel").getData());
+            // oData werkt aan de hand van batches om te communiceren met de server
             this.getOwnerComponent().getModel().submitBatch("createExpense")
                 .then(function () {
-                    // Expense is succesvol aangemaakt
-                    MessageBox.alert("Expense succesvol opgeslagen", {
-                        icon: sap.m.MessageBox.Icon.SUCCESS,
-                        title: "Success"
-                    });
-                }, function (oError) {
-                    // Foutmelding tonen als er iets misgaat
-                    MessageBox.alert(oError.message, {
-                        icon: sap.m.MessageBox.Icon.ERROR,
-                        title: "Fout bij het opslaan"
-                    });
-                });
+				// De prospect is aangemaakt
+				MessageBox.alert("Changes have been saved", {
+					icon : sap.m.MessageBox.Icon.SUCCESS,
+					title : "Success"
+				});
+			}, function (oError) {
+                // Er ging iets fout tijdens het aanmaken van de prospect
+				MessageBox.alert(oError.message, {
+					icon : sap.m.MessageBox.Icon.ERROR,
+					title : "Unexpected Error"
+				});
+			});
+            
         },
 
         onNextTab: function () {
@@ -78,7 +83,7 @@ sap.ui.define([
                 category: "Categorie",
                 financing_type: "Financieringstype",
                 execution_months: "Aantal maanden van uitvoering",
-                expense_amount: "Bedrag van de expense (€)",
+                amount: "Bedrag van de expense (€)",
                 green_energy_output: "Groene energie opbrengst (in %)",
                 current_co2_impact: "Huidige CO2 impact (in kg/ton)",
                 expected_co2_impact: "CO2 impact na realisatie v/h project (in kg/ton)",
@@ -105,10 +110,6 @@ sap.ui.define([
             oIconTabBar.setSelectedKey("generalInfo");
         },
 
-        onNavBack: function () {
-            // Navigeer terug naar de vorige pagina
-            window.history.go(-1);
-        },
 
         onComplete: function () {
             MessageBox.success("Het proces is voltooid.", {

@@ -12,7 +12,8 @@
 }
 
 .app-title {
-    margin-left: 15px; /* Ruimte tussen logo en titel */
+    margin-left: 50px; /* Ruimte tussen logo en titel */
     font-weight: bold; /* Optioneel: Maak de tekst vet */
+    font-size: larger;
 }
 
