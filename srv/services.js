@@ -6,6 +6,7 @@ module.exports = cds.service.impl(async function () {
     // Hook vóór het opslaan van een expense
     this.before('CREATE', 'Expenses', (req) => {
         const data = req.data;
+    
 
         // Validatie: Bedrag mag niet negatief zijn
         if (data.expense_amount <= 0) {

@@ -181,8 +181,8 @@ annotate service.Expenses with @(
             SortOrder : [
                 {
                     $Type : 'Common.SortOrderType',
-                    Property : start_date,
-                    Descending : true,
+                    Property : submitted_on,
+                    Descending : false,
                 },
             ],
         },
@@ -209,17 +209,15 @@ annotate service.Expenses with {
                     $Type : 'Common.ValueListParameterDisplayOnly',
                     ValueListProperty : 'name',
                 },
-                {
-                    $Type : 'Common.ValueListParameterDisplayOnly',
-                    ValueListProperty : 'description',
-                },
             ],
+            Label : '{i18n>Categories}',
         },
+        Common.ValueListWithFixedValues : true,
         Common.Text : {
             $value : category.name,
-            ![@UI.TextArrangement] : #TextOnly
+            ![@UI.TextArrangement] : #TextOnly,
         },
-    )
+        )
 };
 
 annotate service.Expenses with {
@@ -337,5 +335,12 @@ annotate service.Status with {
         },
         Common.ValueListWithFixedValues : true,
     )
+};
+
+annotate service.Categories with {
+    ID @Common.Text : {
+        $value : name,
+        ![@UI.TextArrangement] : #TextOnly
+    }
 };
 

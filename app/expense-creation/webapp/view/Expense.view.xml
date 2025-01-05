@@ -71,7 +71,7 @@
                         <HBox justifyContent="SpaceBetween">
                             <Button text="Terug" type="Transparent" press="onPreviousTab" enabled="false" />
                             <Button text="Volgende" type="Emphasized" press="onNextTab" />
-                            <Button text="TEST" type="Emphasized" press="onExpenseCreation" />
+                            
                         </HBox>
                     </VBox>
                 </IconTabFilter>
@@ -82,6 +82,7 @@
                     text="Overzicht" 
                     key="overview">
                     <VBox class="sapUiResponsiveMargin">
+                     <Title text="In te dienen Expense:" level="H2" class="sapUiSmallMarginBottom" />
                         <List id="overviewList" items="{overviewModel>/}">
                             <StandardListItem title="{overviewModel>fieldName}" description="{overviewModel>fieldValue}" />
                         </List>
