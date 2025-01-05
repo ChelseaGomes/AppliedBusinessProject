@@ -64,8 +64,8 @@
                                 <items>
                                     <ColumnListItem>
                                         <cells>
-                                            <Text text="{name}" />
-                                            <Text text="{description}" />
+                                            <Text text="{categoriesModel>name}" />
+                                            <Text text="{categoriesModel>description}" />
                                             <ObjectStatus
                                                 text="{categoriesModel>state}"
                                                 state="{= ${categoriesModel>state} === 'ACT' ? 'Success' : 'Error'}"

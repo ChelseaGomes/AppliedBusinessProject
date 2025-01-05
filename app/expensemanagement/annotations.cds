@@ -182,7 +182,7 @@ annotate service.Expenses with @(
                 {
                     $Type : 'Common.SortOrderType',
                     Property : submitted_on,
-                    Descending : false,
+                    Descending : true,
                 },
             ],
         },
