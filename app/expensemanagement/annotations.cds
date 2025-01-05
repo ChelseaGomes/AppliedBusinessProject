@@ -141,7 +141,6 @@ annotate service.Expenses with @(
         },
         TypeImageUrl : 'sap-icon://expense-report',
     },
-    UI.DeleteHidden : true,
     UI.FieldGroup #Details : {
         $Type : 'UI.FieldGroupType',
         Data : [
@@ -182,7 +181,7 @@ annotate service.Expenses with @(
             SortOrder : [
                 {
                     $Type : 'Common.SortOrderType',
-                    Property : submitted_on,
+                    Property : start_date,
                     Descending : true,
                 },
             ],
