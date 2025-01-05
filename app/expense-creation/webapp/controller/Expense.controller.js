@@ -11,25 +11,12 @@ sap.ui.define([
             let oExpenseModel = new sap.ui.model.json.JSONModel({
                 project_name: "",
                 project_leader: "",
-                start_date: null,
+                start_date: "",
                 category_ID: "",
                 financing_type_ID: "",
-                execution_months: null,
-                amount: null,
-                environment: {
-                    current_co2_impact: null,
-                    expected_co2_impact: null,
-                    current_water_consumption: null,
-                    expected_water_consumption: null,
-                    green_payback: null,
-                    green_energy_output: null
-                },
-                observation: null, 
-                observation: "",
-        status_code: "I",
-        submitted_by: "",
-        submitted_on: null
-
+                execution_months: "",
+                amount: "",
+                observation:""
             });
 
             let oOverviewModel = new sap.ui.model.json.JSONModel();
