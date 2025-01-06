@@ -6,7 +6,7 @@
     controllerName="expensecreation.controller.Expense" 
     displayBlock="true">
 
-    <Page class="page_expense" title="Expense Creation Application">
+    <Page class="page_expense" title="Expense Creation Application" >
         
 
         <!-- Tab Container for Sections -->

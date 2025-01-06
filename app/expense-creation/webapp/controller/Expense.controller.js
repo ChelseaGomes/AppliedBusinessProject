@@ -97,7 +97,7 @@ sap.ui.define([
         onExpenseCreation: function () {
             console.log("Submit button clicked");
 
-            
+
 
             const oModel = this.getOwnerComponent().getModel(); // Haal het OData-model op
             const oExpenseData = this.getView().getModel("expenseModel").getData(); // Haal de gegevens van het Expense-model op
@@ -137,6 +137,34 @@ sap.ui.define([
                 console.error("Error creating Environment:", error);
                 MessageBox.error("Fout bij het aanmaken van de Environment: " + error.message);
             });
+            // **RESETLOGICA START**
+            // Reset het expenseModel
+            this.getView().getModel("expenseModel").setData({
+                project_name: "",
+                project_leader: "",
+                start_date: "",
+                category_ID: "",
+                financing_type_ID: "",
+                execution_months: "",
+                amount: "",
+                observation: "",
+                environment: {
+                    current_co2_impact: "",
+                    expected_co2_impact: "",
+                    current_water_consumption: "",
+                    expected_water_consumption: "",
+                    green_payback: "",
+                    green_energy_output: ""
+                },
+                submitted_on: new Date().toISOString().split(".")[0] // Stel de huidige datum opnieuw in
+            });
+
+            // Ga terug naar de eerste tab
+            let oIconTabBar = this.getView().byId("iconTabBarId");
+            oIconTabBar.setSelectedKey("generalInfo");
+            // **RESETLOGICA EINDE**
+
+
 
 
 

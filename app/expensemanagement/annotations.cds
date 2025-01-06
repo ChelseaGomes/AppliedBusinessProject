@@ -13,7 +13,8 @@ annotate service.Expenses with @(
             },
             {
                 $Type : 'UI.DataField',
-                Value : environment.expense.status.descr,
+                Label : '{i18n>Projectleider}',
+                Value : project_leader,
             },
             {
                 $Type : 'UI.DataField',
@@ -22,18 +23,18 @@ annotate service.Expenses with @(
             },
             {
                 $Type : 'UI.DataField',
-                Label : '{i18n>Projectleider}',
-                Value : project_leader,
+                Value : status_code,
+                Label : '{i18n>Status}',
             },
             {
                 $Type : 'UI.DataField',
-                Value : environment.expense.category_ID,
+                Value : category_ID,
                 Label : '{i18n>Categorie}',
             },
             {
                 $Type : 'UI.DataField',
-                Value : environment.expense.financing_type_ID,
-                Label : 'Financing type',
+                Value : financing_type_ID,
+                Label : '{i18n>FincancingType}',
             },
             {
                 $Type : 'UI.DataField',
@@ -47,7 +48,7 @@ annotate service.Expenses with @(
             },
             {
                 $Type : 'UI.DataField',
-                Value : environment.expense.observation,
+                Value : observation,
                 Label : '{i18n>Opmerking}',
             },
         ],
@@ -314,7 +315,10 @@ annotate service.FinancingType with {
 annotate service.Expenses with {
     status @(
         UI.MultiLineText : true,
-        Common.Text : status.descr,
+        Common.Text : {
+            $value : status.descr,
+            ![@UI.TextArrangement] : #TextOnly
+        },
     )
 };
 
