@@ -1,27 +1,66 @@
 const cds = require('@sap/cds');
+const httpclient = require("@sap-cloud-sdk/http-client");
+const xsenv = require('@sap/xsenv');
+xsenv.loadEnv();
 
-module.exports = cds.service.impl(async function () {
-    const { Expenses } = this.entities;
+module.exports = cds.service.impl(async (srv) => {
+    const { Expenses, FinancingType, Categories, Environment, Status } = cds.entities('ExpenseApp');
 
-    // Hook vóór het opslaan van een expense
-    this.before('CREATE', 'Expenses', (req) => {
-        const data = req.data;
-    
 
-        // Validatie: Bedrag mag niet negatief zijn
-        if (data.expense_amount <= 0) {
-            req.error(400, "Het bedrag moet groter zijn dan 0.");
+
+
+    srv.after('CREATE', 'Expenses', async (req) => {
+
+        let oData = {
+            "definitionId": "us10.3276d0d5trial.expensemanagement.expenseProcessing",
+            "context": {
+                "expensedetails": {
+                    "project_name": req.project_name,
+                    "project_leader": req.project_leader,
+                    "start_date": req.start_date,
+                    "category": req.category,
+                    "financing_type": req.financing_type,
+                    "execution_months": req.execution_months,
+                    "amount": req.amount,
+                    "observation": req.observation,
+                    "status": "I"
+                }
+            }
+
+
         }
 
-        // Validatie: Startdatum mag niet in het verleden liggen
-        const today = new Date();
-        if (new Date(data.start_date) < today) {
-            req.error(400, "Startdatum mag niet in het verleden liggen.");
-        }
-    });
+        let oResponse = await startBusinessProcess(oData)
+    })
 
-    // Hook na het opslaan
-    this.after('CREATE', 'Expenses', (data) => {
-        console.log(`Expense succesvol aangemaakt: ${data.ID}`);
-    });
+    srv.on("TriggerBusinessProcess", async (oReq) => {
+        // Wat krijgen we binnen:
+        console.log(`We krijgen het volgende van data binnen: ${oReq.data.Context}`)
+        // Context komt van de services.cds
+
+        await startBusinessProcess(oReq.data.Context)
+
+    })
+
+
+
 });
+
+async function startBusinessProcess(payload) {
+    try {
+        let oResponse = await httpclient.executeHttpRequest({
+            destinationName: 'expense_process_destination'
+        }, {
+            method: 'POST',
+            url: '/workflow/rest/v1/workflow-instances',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            data: payload
+        });
+        return oResponse.data;
+    } catch (oError) {
+        console.log(`Error connecting to Build Process Automation destination: ${oError.message}`);
+        return null;
+    }
+}

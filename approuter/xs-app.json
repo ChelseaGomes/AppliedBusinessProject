@@ -9,9 +9,9 @@
         "csrfProtection": false
       },
       {
-        "source": "^/sap_ias/(.*)$",
+        "source": "^/expense_process_destination/(.*)$",
         "target": "/$1",
-        "destination": "MySAPSystem",
+        "destination": "expense_process_destination",
         "authenticationType": "xsuaa",
         "csrfProtection": false
       },
