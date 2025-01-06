@@ -54,9 +54,6 @@
                                     <Column>
                                         <Text text="Beschrijving" />
                                     </Column>
-                                    <Column>
-                                        <Text text="Status" />
-                                    </Column>
                                     <Column hAlign="Center" width="5em">
                                         <Text text="Acties" />
                                     </Column>
@@ -66,10 +63,6 @@
                                         <cells>
                                             <Text text="{categoriesModel>name}" />
                                             <Text text="{categoriesModel>description}" />
-                                            <ObjectStatus
-                                                text="{categoriesModel>state}"
-                                                state="{= ${categoriesModel>state} === 'ACT' ? 'Success' : 'Error'}"
-                                            />
                                             <HBox>
                                                 <Button
                                                     icon="sap-icon://edit"
@@ -126,9 +119,7 @@
                                     <Column>
                                         <Text text="Beschrijving" />
                                     </Column>
-                                    <Column>
-                                        <Text text="Status" />
-                                    </Column>
+                                    
                                     <Column hAlign="Center" width="5em">
                                         <Text text="Acties" />
                                     </Column>
@@ -138,10 +129,6 @@
                                         <cells>
                                             <Text text="{financingTypesModel>name}" />
                                             <Text text="{financingTypesModel>description}" />
-                                            <ObjectStatus
-                                                text="{financingTypesModel>state}"
-                                                state="{= ${financingTypesModel>state} === 'ACT' ? 'Success' : 'Error'}"
-                                            />
                                             <HBox>
                                                 <Button
                                                     icon="sap-icon://edit"
