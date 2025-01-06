@@ -43,7 +43,7 @@
                             <Table
                                 id="categorieTable"
                                 inset="false"
-                                items="{/Categories}"
+                                items="{categoriesModel>/}"
                                 class="sapUiResponsiveTable"
                                 width="auto"
                             >
