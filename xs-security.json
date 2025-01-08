@@ -1,25 +1,52 @@
 {
   "xsappname": "appliedbusinessproject",
   "tenant-mode": "dedicated",
-  "description": "Security profile of called application",
+  "description": "Security profile of applied business project application",
   "scopes": [
     {
+      "name": "$XSAPPNAME.ExpenseCreator",
+      "description": "Access to Expense Creation and Management apps"
+    },
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Access to Expense Creation, Management, and Master Data apps"
+    },
+    {
+      "name": "$XSAPPNAME.Manager",
+      "description": "Access to MyInbox and Expense Management apps"
+    },
+    {
       "name": "uaa.user",
-      "description": "UAA"
+      "description": "Default UAA scope"
     }
   ],
   "role-templates": [
     {
-      "name": "Token_Exchange",
-      "description": "UAA",
+      "name": "ExpenseCreator",
+      "description": "Role for expense creators",
       "scope-references": [
-        "uaa.user"
+        "$XSAPPNAME.ExpenseCreator"
+      ]
+    },
+    {
+      "name": "Admin",
+      "description": "Role for administrators",
+      "scope-references": [
+        "$XSAPPNAME.Admin"
+      ]
+    },
+    {
+      "name": "Manager",
+      "description": "Role for managers",
+      "scope-references": [
+        "$XSAPPNAME.Manager"
       ]
     }
   ],
   "oauth2-configuration": {
     "redirect-uris": [
-      "https://**.applicationstudio.cloud.sap/**"
+      "https://*.applicationstudio.cloud.sap/**",
+      "https://*.applicationstudio.saptrial.cloud.sap/**"
     ]
   },
   "attributes": []

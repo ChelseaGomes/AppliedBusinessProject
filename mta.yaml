@@ -131,6 +131,29 @@ modules:
               ServiceKeyName: appliedbusinessproject-auth-key
               sap.cloud.service: appliedbusinessproject.service
 
+  - name: appliedbusinessproject-app-deployer-gen
+    type: com.sap.application.content
+    path: gen
+    requires:
+      - name: appliedbusinessproject-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: app/
+      requires:
+        - name: appliedbusinessprojectexpensecreation
+          artifacts:
+            - expense-creation.zip
+          target-path: app/
+        - name: appliedbusinessprojectexpensemanagement
+          artifacts:
+            - expensemanagement.zip
+          target-path: app/
+        - name: appliedbusinessprojectmasterdatamanagement
+          artifacts:
+            - masterdatamanagement.zip
+          target-path: app/
+
 resources:
   - name: appliedbusinessproject-db
     type: com.sap.xs.hdi-container
