@@ -1,18 +1,27 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-    "sap/m/MessageBox"
+    "sap/m/MessageBox",
 ], function (Controller, JSONModel, MessageBox) {
     "use strict";
 
     return Controller.extend("masterdatamanagement.controller.View1", {
         onInit: function () {
+            console.log(this.getOwnerComponent().getModel());
+
             const oCategoriesModel = new JSONModel();
             const oFinancingTypesModel = new JSONModel();
+            const oDialogModel = new JSONModel({
+                title: "",
+                editObject: {},
+                editPath: "",
+                entityType: ""
+            });
 
             // Set the models on the view
             this.getView().setModel(oCategoriesModel, "categoriesModel");
             this.getView().setModel(oFinancingTypesModel, "financingTypesModel");
+            this.getView().setModel(oDialogModel, "dialog");
 
             // Load the data for both tabs
             this._loadCategories();
@@ -101,13 +110,158 @@ sap.ui.define([
         }
         ,
 
-        onEditCategory: function () {
-            MessageBox.information("Functie om een categorie te bewerken is nog niet geïmplementeerd.");
-        },
 
-        onDeleteCategory: function () {
-            MessageBox.information("Functie om een categorie te verwijderen is nog niet geïmplementeerd.");
+        
+        onEditCategory: function (oEvent) {
+            console.log("Edit Category triggered!");
+        
+            // Get the selected category
+            const oBindingContext = oEvent.getSource().getBindingContext("categoriesModel");
+            if (!oBindingContext) {
+                sap.m.MessageToast.show("Geen categorie geselecteerd.");
+                return;
+            }
+        
+            const oSelectedItem = oBindingContext.getObject(); // The selected category
+            const oCategoriesModel = this.getView().getModel("categoriesModel"); // Get the categoriesModel
+        
+            const oDialog = new sap.m.Dialog({
+                title: "Categorie Bewerken",
+                content: [
+                    new sap.m.Label({ text: "Naam", labelFor: "editCategoryNameInput" }),
+                    new sap.m.Input("editCategoryNameInput", {
+                        value: oSelectedItem.name,
+                        placeholder: "Naam van de categorie"
+                    }),
+                    new sap.m.Label({ text: "Beschrijving", labelFor: "editCategoryDescriptionInput" }),
+                    new sap.m.Input("editCategoryDescriptionInput", {
+                        value: oSelectedItem.description,
+                        placeholder: "Beschrijving van de categorie"
+                    })
+                ],
+                beginButton: new sap.m.Button({
+                    text: "Opslaan",
+                    type: "Emphasized",
+                    press: () => {
+                        const sName = sap.ui.getCore().byId("editCategoryNameInput").getValue();
+                        const sDescription = sap.ui.getCore().byId("editCategoryDescriptionInput").getValue();
+        
+                        if (!sName || !sDescription) {
+                            sap.m.MessageToast.show("Vul zowel de naam als de beschrijving in.");
+                            return;
+                        }
+        
+                        // Update the selected category in the categoriesModel
+                        const aCategories = oCategoriesModel.getData();
+                        const iIndex = aCategories.findIndex(item => item.ID === oSelectedItem.ID);
+                        if (iIndex !== -1) {
+                            aCategories[iIndex].name = sName;
+                            aCategories[iIndex].description = sDescription;
+                            oCategoriesModel.setData(aCategories); // Update the model
+                        }
+        
+                        sap.m.MessageToast.show("Categorie succesvol bijgewerkt!");
+                        oDialog.close();
+                    }
+                }),
+                endButton: new sap.m.Button({
+                    text: "Annuleren",
+                    press: () => {
+                        oDialog.close();
+                    }
+                }),
+                afterClose: () => {
+                    oDialog.destroy();
+                }
+            });
+        
+            oDialog.open();
+        }
+        
+        
+        
+        
+        
+        ,
+        onSaveItem: function () {
+            const dialogData = this.getView().getModel("dialog").getData(); // Haal dialog-gegevens op
+            const oModel = this.getOwnerComponent().getModel(); // Haal het ODataModel op
+            const oPayload = {
+                name: dialogData.editObject.name,
+                description: dialogData.editObject.description,
+                isEnabled: dialogData.editObject.isEnabled
+            };
+        
+            if (dialogData.entityType === "category") {
+                if (dialogData.editPath) {
+                    // Pad naar de specifieke categorie in je OData-service
+                    const sPath = `/Categories('${dialogData.editObject.ID}')`;
+        
+                    // Update bestaande categorie via OData
+                    oModel.update(sPath, oPayload, {
+                        success: () => {
+                            sap.m.MessageToast.show("Categorie succesvol bijgewerkt!");
+                            this._loadCategories(); // Herlaad de categorieën
+                            this.editDialog.close(); // Sluit de dialog
+                        },
+                        error: (oError) => {
+                            sap.m.MessageBox.error("Fout bij het bijwerken: " + oError.message);
+                        }
+                    });
+                } else {
+                    // Voeg nieuwe categorie toe
+                    oModel.create("/Categories", oPayload, {
+                        success: () => {
+                            sap.m.MessageToast.show("Categorie succesvol toegevoegd!");
+                            this._loadCategories(); // Herlaad de categorieën
+                            this.editDialog.close(); // Sluit de dialog
+                        },
+                        error: (oError) => {
+                            sap.m.MessageBox.error("Fout bij het toevoegen: " + oError.message);
+                        }
+                    });
+                }
+            }
         },
+        
+
+        onDeleteCategory: function (oEvent) {
+            console.log("Delete Category triggered!");
+        
+            // Get the selected category
+            const oBindingContext = oEvent.getSource().getBindingContext("categoriesModel");
+            if (!oBindingContext) {
+                sap.m.MessageToast.show("Geen categorie geselecteerd.");
+                return;
+            }
+        
+            const oSelectedItem = oBindingContext.getObject(); // The selected category
+            const oCategoriesModel = this.getView().getModel("categoriesModel"); // Get the categoriesModel
+        
+            sap.m.MessageBox.confirm(
+                `Wilt u de categorie "${oSelectedItem.name}" definitief verwijderen? Dit kan niet ongedaan gemaakt worden.`, {
+                    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                    onClose: (sAction) => {
+                        if (sAction === sap.m.MessageBox.Action.YES) {
+                            // Remove the category from the categoriesModel
+                            const aCategories = oCategoriesModel.getData();
+                            const iIndex = aCategories.findIndex(item => item.ID === oSelectedItem.ID);
+                            if (iIndex !== -1) {
+                                aCategories.splice(iIndex, 1); // Remove the item
+                                oCategoriesModel.setData(aCategories); // Update the model
+                            }
+        
+                            sap.m.MessageToast.show("Categorie succesvol verwijderd!");
+                        }
+                    }
+                }
+            );
+        }
+        
+        
+        
+    
+        ,
 
         onAddFinancingType: function () {
             const oModel = this.getOwnerComponent().getModel();
@@ -163,12 +317,111 @@ sap.ui.define([
         }
         ,
 
-        onEditFinancingType: function () {
-            MessageBox.information("Functie om een financieringstype te bewerken is nog niet geïmplementeerd.");
-        },
-
-        onDeleteFinancingType: function () {
-            MessageBox.information("Functie om een financieringstype te verwijderen is nog niet geïmplementeerd.");
+        onEditFinancingType: function (oEvent) {
+            console.log("Edit Financing Type triggered!");
+        
+            // Get the selected financing type
+            const oBindingContext = oEvent.getSource().getBindingContext("financingTypesModel");
+            if (!oBindingContext) {
+                sap.m.MessageToast.show("Geen financieringstype geselecteerd.");
+                return;
+            }
+        
+            const oSelectedItem = oBindingContext.getObject(); // The selected financing type
+            const oFinancingTypesModel = this.getView().getModel("financingTypesModel"); // Get the financingTypesModel
+        
+            const oDialog = new sap.m.Dialog({
+                title: "Financieringstype Bewerken",
+                content: [
+                    new sap.m.Label({ text: "Naam", labelFor: "editFinancingTypeNameInput" }),
+                    new sap.m.Input("editFinancingTypeNameInput", {
+                        value: oSelectedItem.name,
+                        placeholder: "Naam van het financieringstype"
+                    }),
+                    new sap.m.Label({ text: "Beschrijving", labelFor: "editFinancingTypeDescriptionInput" }),
+                    new sap.m.Input("editFinancingTypeDescriptionInput", {
+                        value: oSelectedItem.description,
+                        placeholder: "Beschrijving van het financieringstype"
+                    })
+                ],
+                beginButton: new sap.m.Button({
+                    text: "Opslaan",
+                    type: "Emphasized",
+                    press: () => {
+                        const sName = sap.ui.getCore().byId("editFinancingTypeNameInput").getValue();
+                        const sDescription = sap.ui.getCore().byId("editFinancingTypeDescriptionInput").getValue();
+        
+                        if (!sName || !sDescription) {
+                            sap.m.MessageToast.show("Vul zowel de naam als de beschrijving in.");
+                            return;
+                        }
+        
+                        // Update the selected financing type in the financingTypesModel
+                        const aFinancingTypes = oFinancingTypesModel.getData();
+                        const iIndex = aFinancingTypes.findIndex(item => item.ID === oSelectedItem.ID);
+                        if (iIndex !== -1) {
+                            aFinancingTypes[iIndex].name = sName;
+                            aFinancingTypes[iIndex].description = sDescription;
+                            oFinancingTypesModel.setData(aFinancingTypes); // Update the model
+                        }
+        
+                        sap.m.MessageToast.show("Financieringstype succesvol bijgewerkt!");
+                        oDialog.close();
+                    }
+                }),
+                endButton: new sap.m.Button({
+                    text: "Annuleren",
+                    press: () => {
+                        oDialog.close();
+                    }
+                }),
+                afterClose: () => {
+                    oDialog.destroy();
+                }
+            });
+        
+            oDialog.open();
         }
+        
+
+        
+        ,
+        
+
+        onDeleteFinancingType: function (oEvent) {
+            console.log("Delete Financing Type triggered!");
+        
+            // Get the selected financing type
+            const oBindingContext = oEvent.getSource().getBindingContext("financingTypesModel");
+            if (!oBindingContext) {
+                sap.m.MessageToast.show("Geen financieringstype geselecteerd.");
+                return;
+            }
+        
+            const oSelectedItem = oBindingContext.getObject(); // The selected financing type
+            const oFinancingTypesModel = this.getView().getModel("financingTypesModel"); // Get the financingTypesModel
+        
+            sap.m.MessageBox.confirm(
+                `Wilt u het financieringstype "${oSelectedItem.name}" definitief verwijderen? Dit kan niet ongedaan gemaakt worden.`, {
+                    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                    onClose: (sAction) => {
+                        if (sAction === sap.m.MessageBox.Action.YES) {
+                            // Remove the financing type from the financingTypesModel
+                            const aFinancingTypes = oFinancingTypesModel.getData();
+                            const iIndex = aFinancingTypes.findIndex(item => item.ID === oSelectedItem.ID);
+                            if (iIndex !== -1) {
+                                aFinancingTypes.splice(iIndex, 1); // Remove the item
+                                oFinancingTypesModel.setData(aFinancingTypes); // Update the model
+                            }
+        
+                            sap.m.MessageToast.show("Financieringstype succesvol verwijderd!");
+                        }
+                    }
+                }
+            );
+        }
+        
+
+
     });
 });

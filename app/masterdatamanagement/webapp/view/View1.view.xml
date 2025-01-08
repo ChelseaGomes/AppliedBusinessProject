@@ -69,6 +69,7 @@
                                                     tooltip="Bewerken"
                                                     type="Transparent"
                                                     press="onEditCategory"
+                                                    
                                                 />
                                                 <Button
                                                     icon="sap-icon://delete"

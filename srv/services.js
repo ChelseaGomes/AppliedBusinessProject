@@ -5,9 +5,14 @@ xsenv.loadEnv();
 
 module.exports = cds.service.impl(async (srv) => {
     const { Expenses, FinancingType, Categories, Environment, Status } = cds.entities('ExpenseApp');
-
-
-
+    srv.on('UPDATE', 'Categories', async (req) => {
+        const { ID, name, description } = req.data;
+        const result = await cds.run(
+            UPDATE('Categories').set({ name, description }).where({ ID })
+        );
+        if (!result) req.error(404, `Categorie met ID ${ID} niet gevonden.`);
+    });
+    
 
     srv.after('CREATE', 'Expenses', async (req) => {
 
