@@ -69,7 +69,8 @@
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
-        "sap.fe.templates": {}
+        "sap.fe.templates": {},
+        "sap.f": {}
       }
     },
     "contentDensities": {
@@ -101,17 +102,28 @@
       "css": []
     },
     "routing": {
-      "config": {},
+      "config": {
+        "flexibleColumnLayout": {
+          "defaultTwoColumnLayoutType": "TwoColumnsBeginExpanded",
+          "defaultThreeColumnLayoutType": "ThreeColumnsEndExpanded"
+        },
+        "routerClass": "sap.f.routing.Router"
+      },
       "routes": [
         {
           "pattern": ":?query:",
           "name": "ExpensesList",
-          "target": "ExpensesList"
+          "target": [
+            "ExpensesList"
+          ]
         },
         {
           "pattern": "Expenses({key}):?query:",
           "name": "ExpensesObjectPage",
-          "target": "ExpensesObjectPage"
+          "target": [
+            "ExpensesList",
+            "ExpensesObjectPage"
+          ]
         }
       ],
       "targets": {
@@ -147,7 +159,9 @@
               "initialLoad": "Enabled",
               "defaultTemplateAnnotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#table"
             }
-          }
+          },
+          "controlAggregation": "beginColumnPages",
+          "contextPattern": ""
         },
         "ExpensesObjectPage": {
           "type": "Component",
@@ -165,7 +179,9 @@
               "showRelatedApps": true,
               "sectionLayout": "Page"
             }
-          }
+          },
+          "controlAggregation": "midColumnPages",
+          "contextPattern": "/Expenses({key})"
         }
       }
     },
@@ -173,6 +189,12 @@
       "extensions": {
         "sap.ui.controllerExtensions": {}
       }
+    },
+    "rootView": {
+      "viewName": "sap.fe.templates.RootContainer.view.Fcl",
+      "type": "XML",
+      "async": true,
+      "id": "appRootView"
     }
   },
   "sap.fiori": {
